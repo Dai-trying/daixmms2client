@@ -6,4 +6,4 @@ I am new to publishing software so if I do not do something straight away it wil
 
 Here is a screenshot of what it looks like, I hope to have all the files uploaded real soon.
 
-![alt text](https://github.com/Dai-trying/daisxmms2skin.git/skin_Mlibrary.png "what it looks like now")
+![alt text](https://github.com/Dai-trying/daisxmms2skin/blob/master/skin_Mlibrary.png "what it looks like now")
