@@ -591,7 +591,7 @@ class UiMainWindow(object):
         self.label_title.setFont(font)
         self.label_title.setAlignment(QtCore.Qt.AlignCenter)
         self.label_title.setObjectName("label_title")
-        self.label_title.setText("D   I   S   P   L   A   Y       O   R       H   I   D   E       C   O   L   U   M   N   S")
+        self.label_title.setText("D   I   S   P   L   A   Y     O   R     H   I   D   E     C   O   L   U   M   N   S")
         self.lyt_tab_grid.addWidget(self.label_title, 0, 0, 1, 11)
         self.tabWidget.addTab(self.tabSettings, "")
 
