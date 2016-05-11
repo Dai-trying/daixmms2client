@@ -140,7 +140,7 @@ def xmms_get_all_library_list():
     # noinspection PyUnresolvedReferences
     ids = c.Match(field="id", value="*")
     result = xmms.coll_query_infos(ids, ["id", "artist", "title", "album", "genre", "bitrate", "performer",
-                                            "duration", "timesplayed", "size", "partofset", "tracknr"])
+                                         "duration", "timesplayed", "size", "partofset", "tracknr"])
     result.wait()
     if result.is_error():
         return False
@@ -149,7 +149,7 @@ def xmms_get_all_library_list():
 
 def xmms_get_list_of_play_lists():
     """
-    Get list of available playlists
+    Get list of available play lists
     :return: XmmsResult or False on error
     """
     result = xmms.playlist_list()
