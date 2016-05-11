@@ -138,8 +138,8 @@ def xmms_get_all_library_list():
     :return: XmmsResult
     """
     # noinspection PyUnresolvedReferences
-    artist = c.Match(field="artist", value="*")
-    result = xmms.coll_query_infos(artist, ["id", "artist", "title", "album", "genre", "bitrate", "performer",
+    ids = c.Match(field="id", value="*")
+    result = xmms.coll_query_infos(ids, ["id", "artist", "title", "album", "genre", "bitrate", "performer",
                                             "duration", "timesplayed", "size", "partofset", "tracknr"])
     result.wait()
     if result.is_error():
