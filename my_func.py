@@ -677,16 +677,16 @@ def set_now_stuff_from_broadcast(self, data):
 def set_pb(self, ms):
     # noinspection PyUnresolvedReferences
     if isinstance(ms, xmmsvalue.XmmsValue):
-        millisecs = ms.value()
+        milli_secs = ms.value()
     else:
-        millisecs = ms
+        milli_secs = ms
     if self.Now_Playing == "":
         return
     tot_time = ms_int_to_time(self.Now_Playing["duration"])
-    self.progressBar.setFormat(str("%02d:%02d" % (millisecs/60000, (millisecs/1000) % 60)) + " / " + str(tot_time))
+    self.progressBar.setFormat(str("%02d:%02d" % (milli_secs/60000, (milli_secs/1000) % 60)) + " / " + str(tot_time))
     try:
         pc = self.Now_Playing["duration"]/100
-        this_pc = millisecs / float(pc)
+        this_pc = milli_secs / float(pc)
         self.progressBar.setValue(this_pc)
     except ZeroDivisionError:
         return 0
