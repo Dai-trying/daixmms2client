@@ -32,7 +32,7 @@ if not os.path.isdir(os.path.join(os.path.expanduser('~'), ".config/daixmmsdata"
         pass
 
 
-conffile = os.path.join(os.path.expanduser('~'), ".config/daixmmsdata/config.conf")
+conf_file = os.path.join(os.path.expanduser('~'), ".config/daixmmsdata/config.conf")
 
 
 def set_new_config_file():
@@ -50,21 +50,21 @@ def set_new_config_file():
         for the_key in section2_keys:
             config.set(section2, str(the_key), (str(100)))
 
-    with open(conffile, 'w') as f:
+    with open(conf_file, 'w') as f:
         config.write(f)
 
 
-if os.path.isfile(conffile):
+if os.path.isfile(conf_file):
     pass
 else:
-    cfile = open(conffile, 'a')
-    cfile.close()
+    c_file = open(conf_file, 'a')
+    c_file.close()
     set_new_config_file()
 
 
 def load_media_to_library(self):
     """
-    Load all media entries from medialib to memory [list(My_Library)]
+    Load all media entries from media lib to memory [list(My_Library)]
     :param self: calling Object
     :return: None
     """
@@ -79,7 +79,7 @@ def load_media_to_library(self):
 
 def load_play_lists(self):
     """
-    Load all playlists to memory [list(Play_Lists)]
+    Load all play lists to memory [list(Play_Lists)]
     :param self:
     :return: None
     """
@@ -171,7 +171,7 @@ def get_playlist_entries_from_mem(self, plist):
     Get details from memory [list(Play_Lists)] for given playlist
     :param self:
     :param plist: str
-    :return: list of medialib id's of False on error
+    :return: list of media lib id's of False on error
     """
     if plist is None or plist is False:
         return False
@@ -184,10 +184,10 @@ def get_playlist_entries_from_mem(self, plist):
 
 def get_info_by_ml_id(self, ml_id):
     """
-    Get track information for given medialib id from memory [list(My_Library)]
+    Get track information for given media lib id from memory [list(My_Library)]
     :param self:
     :param ml_id: int
-    :return: iten from [list(My_Library)] or False on error
+    :return: item from [list(My_Library)] or False on error
     """
     my_item = next((item for item in self.My_Library if item['id'] == ml_id), None)
     if my_item is None:
@@ -195,7 +195,6 @@ def get_info_by_ml_id(self, ml_id):
     return my_item
 
 
-# noinspection SpellCheckingInspection
 def clean_track(track):
     """
     Clean all track variables for insertion to memory/table from given dict
@@ -475,8 +474,8 @@ def highlight_current(self):
 
 
 def highlight_row(self, this_row):
-    allrows = self.tableNowPlaying.rowCount()
-    for row in xrange(0, allrows):
+    all_rows = self.tableNowPlaying.rowCount()
+    for row in xrange(0, all_rows):
         self.tableNowPlaying.item(row, 0).setBackground(QColor(255, 255, 255))
         self.tableNowPlaying.item(row, 1).setBackground(QColor(255, 255, 255))
         self.tableNowPlaying.item(row, 2).setBackground(QColor(255, 255, 255))
@@ -543,9 +542,9 @@ def playlist_changed(self, result):
             refresh_playlists(self, result.value()['name'])
             load_pl_entries_table(self)
         else:
-            thislist = self.combo_pl_names.currentText()
+            this_list = self.combo_pl_names.currentText()
             refresh_playlists(self, result.value()['name'])
-            self.combo_pl_names.setCurrentIndex(self.combo_pl_names.findText(thislist))
+            self.combo_pl_names.setCurrentIndex(self.combo_pl_names.findText(this_list))
     elif result.value()["type"] == 3:
         # print("    Remove" + str(result.value()))
         if result.value()['name'] == "Default":
@@ -593,9 +592,9 @@ def playlist_changed(self, result):
             refresh_playlists(self, result.value()['name'])
             load_pl_entries_table(self)
         else:
-            thislist = self.combo_pl_names.currentText()
+            this_list = self.combo_pl_names.currentText()
             refresh_playlists(self, result.value()['name'])
-            self.combo_pl_names.setCurrentIndex(self.combo_pl_names.findText(thislist))
+            self.combo_pl_names.setCurrentIndex(self.combo_pl_names.findText(this_list))
     elif result.value()["type"] == 7:
         # print("    Playlist Update " + str(result.value()))
         pass
@@ -625,7 +624,7 @@ def collection_changed(self, result):
             print("Collection changed but result is out of bounds")
 
 
-def set_playstatus(self):
+def set_play_status(self):
     status = xmmsfun.xmms_get_play_status()
     if status is not False:
         play_status_control(self, status)
@@ -762,10 +761,10 @@ def refresh_playlist_combo(self):
         self.combo_pl_names.addItem(item)
 
 
-def rename_playlist(self, oldname, newname):
+def rename_playlist(self, old_name, new_name):
     for plist in self.Play_Lists:
-        if plist['Name'] == oldname:
-            plist['Name'] = newname
+        if plist['Name'] == old_name:
+            plist['Name'] = new_name
 
 
 def play_list_now(self):
@@ -783,15 +782,15 @@ def add_play_list_to_now(self):
 
 
 def load_this_playlist(self, plist):
-    thislist = get_playlist_entries_from_mem(self, plist)
-    for track in thislist:
+    this_list = get_playlist_entries_from_mem(self, plist)
+    for track in this_list:
         xmmsfun.xmms_add_ml_id_to_playlist(track, 'Default')
 
 
-def add_id_list_to_nowplaying(selection):
+def add_id_list_to_now_playing(selection):
     if selection:
-        for mlid in selection:
-            xmmsfun.xmms_add_ml_id_to_playlist(mlid, "Default")
+        for ml_id in selection:
+            xmmsfun.xmms_add_ml_id_to_playlist(ml_id, "Default")
 
 
 # Media Library methods
@@ -818,13 +817,13 @@ def update_ml_id_with_track(self, track):
 
     np_rows = find_rows_in_table(self.tableNowPlaying, track['id'])
     if len(np_rows) > 0:
-        for thisrow in np_rows:
-            set_table_with_new_values(thisrow, self.tableNowPlaying, track)
+        for this_row in np_rows:
+            set_table_with_new_values(this_row, self.tableNowPlaying, track)
 
     pl_rows = find_rows_in_table(self.table_pl_entries, track['id'])
     if len(pl_rows) > 0:
-        for thisrow in pl_rows:
-            set_table_with_new_values(thisrow, self.table_pl_entries, track)
+        for this_row in pl_rows:
+            set_table_with_new_values(this_row, self.table_pl_entries, track)
 
     ml_row = find_row_in_table(self.tableMediaLibrary, track['id'])
     if ml_row is not False:
@@ -832,10 +831,10 @@ def update_ml_id_with_track(self, track):
 
 
 def update_ml_id(self, ml_id):
-    cleantrack = clean_track_result(xmmsfun.xmms_get_medialib_info_by_ml_id(ml_id))
-    if cleantrack is not None:
+    cl_track = clean_track_result(xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id))
+    if cl_track is not None:
         self.tableMediaLibrary.setSortingEnabled(False)
-        update_ml_id_with_track(self, cleantrack)
+        update_ml_id_with_track(self, cl_track)
         self.tableMediaLibrary.setSortingEnabled(True)
         return True
     return False
@@ -889,23 +888,23 @@ def get_ml_selection(self):
     for selectionRange in self.tableMediaLibrary.selectedRanges():
         indexes.extend(range(selectionRange.topRow(), selectionRange.bottomRow() + 1))
     for i in indexes:
-        mlid = self.tableMediaLibrary.item(i, 0).text()
-        ml_ids.append(int(mlid))
+        ml_id = self.tableMediaLibrary.item(i, 0).text()
+        ml_ids.append(int(ml_id))
     return ml_ids
 
 
-def ml_selection_to_nowplaying(self):
-    idlist = get_ml_selection(self)
-    add_id_list_to_nowplaying(idlist)
+def ml_selection_to_now_playing(self):
+    id_list = get_ml_selection(self)
+    add_id_list_to_now_playing(id_list)
 
 
-def ml_selection_replace_nowplaying(self):
-    idlist = get_ml_selection(self)
+def ml_selection_replace_now_playing(self):
+    id_list = get_ml_selection(self)
     xmmsfun.xmms_clear_playlist_tracks("Default")
-    add_id_list_to_nowplaying(idlist)
+    add_id_list_to_now_playing(id_list)
 
 
-def showdialog(self, title, question):
+def show_dialog(self, title, question):
     # noinspection PyArgumentList
     text, ok = QInputDialog.getText(self, title, question)
     if ok:
@@ -913,7 +912,7 @@ def showdialog(self, title, question):
 
 
 def add_new_playlist(self):
-    pl_name = showdialog(self, 'Input Dialog', 'Name for new playlist:')
+    pl_name = show_dialog(self, 'Input Dialog', 'Name for new playlist:')
     if pl_name is None or str(pl_name) is "":
         return False
     else:
@@ -923,13 +922,13 @@ def add_new_playlist(self):
 
 def add_id_list_to_play_list(selection, pl_name):
     if selection:
-        for mlid in selection:
-            xmmsfun.xmms_add_ml_id_to_playlist(mlid, pl_name)
+        for ml_id in selection:
+            xmmsfun.xmms_add_ml_id_to_playlist(ml_id, pl_name)
 
 
 def ml_selection_to_play_list(self, pl_name):
-    idlist = get_ml_selection(self)
-    add_id_list_to_play_list(idlist, pl_name)
+    id_list = get_ml_selection(self)
+    add_id_list_to_play_list(id_list, pl_name)
 
 
 def update_the_library(self):
@@ -941,8 +940,8 @@ def update_the_library(self):
 
 def make_playlists_from_albums(self):
     for track in self.My_Library:
-        thislist = get_list_of_playlists(self)
-        if track['album'] not in thislist:
+        this_list = get_list_of_playlists(self)
+        if track['album'] not in this_list:
             xmmsfun.xmms_create_playlist(str(track['album']))
         plist = get_playlist_entries_from_mem(self, track['album'])
         if track['id'] in plist:
@@ -952,13 +951,13 @@ def make_playlists_from_albums(self):
 
 
 def get_list_of_playlists(self):
-    thislist = []
-    for mylist in self.Play_Lists:
-        if mylist['Name'].startswith("_") or mylist['Name'] == "Default":
+    this_list = []
+    for my_list in self.Play_Lists:
+        if my_list['Name'].startswith("_") or my_list['Name'] == "Default":
             pass
         else:
-            thislist.append(mylist['Name'])
-    sorted_list = sorted(thislist)
+            this_list.append(my_list['Name'])
+    sorted_list = sorted(this_list)
     return sorted_list
 
 
@@ -1006,7 +1005,7 @@ def remove_entry_from_now_playing(self):
 
 def remove_ml_id_list_from_library(self, id_list):
     for ml_id in id_list:
-        if xmmsfun.xmms_medialib_remove_entry(ml_id):
+        if xmmsfun.xmms_media_lib_remove_entry(ml_id):
             self.tableMediaLibrary.removeRow(find_row_in_table(self.tableMediaLibrary, ml_id))
             remove_ml_id_from_library(self, ml_id)
 
@@ -1014,7 +1013,7 @@ def remove_ml_id_list_from_library(self, id_list):
 def update_new_changed_ml_id_list(self, ml_id_list):
     self.tableMediaLibrary.setSortingEnabled(False)
     for ml_id in ml_id_list:
-        result = xmmsfun.xmms_get_medialib_info_by_ml_id(ml_id)
+        result = xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id)
         result.wait()
         if result.is_error():
             print("Failed to add " + str(ml_id))
@@ -1039,15 +1038,15 @@ def check_now_playing_contains(ml_id_list):
     return False
 
 
-def toggle_column(table, column, thebool):
-    table.setColumnHidden(column, thebool)
+def toggle_column(table, column, the_bool):
+    table.setColumnHidden(column, the_bool)
 
 
 def load_col_sizes(self):
     specs = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
-    config.read(conffile)
+    config.read(conf_file)
     for spec in specs:
         if spec == 'table_ml_columns_size':
             for row in the_rows:
@@ -1071,7 +1070,7 @@ def load_config_data(self):
               self.rb_np_7, self.rb_np_8, self.rb_np_9, self.rb_np_10, self.rb_np_11]
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
-    config.read(conffile)
+    config.read(conf_file)
     for spec in specs:
         if spec == 'table_ml_columns_show':
             for row in the_rows:
@@ -1101,7 +1100,7 @@ def save_col_sizes(self):
     specs = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
-    config.read(conffile)
+    config.read(conf_file)
     for spec in specs:
         if spec is 'table_ml_columns_size':
             for row in the_rows:
@@ -1116,7 +1115,7 @@ def save_col_sizes(self):
                 if self.tableNowPlaying.columnWidth(row) != 0:
                     config.set(spec, str(row), (str(self.tableNowPlaying.columnWidth(row))))
 
-    with open(conffile, 'w') as f:
+    with open(conf_file, 'w') as f:
         config.write(f)
 
 
@@ -1131,7 +1130,7 @@ def save_config_data(self):
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
     config = SafeConfigParser()
-    config.read(conffile)
+    config.read(conf_file)
 
     for spec in specs:
         if spec == 'table_ml_columns_show':
@@ -1147,7 +1146,7 @@ def save_config_data(self):
     config.set('table_pl_columns_show', 'rows', str(self.rb_pl_rows.isChecked()))
     config.set('table_np_columns_show', 'rows', str(self.rb_np_rows.isChecked()))
 
-    with open(conffile, 'w') as f:
+    with open(conf_file, 'w') as f:
         config.write(f)
 
     load_config_data(self)

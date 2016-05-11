@@ -25,9 +25,10 @@ import my_base
 import my_func
 import xmmsfun
 from connector import XMMSConnector
+from copy import deepcopy
+
 # noinspection PyUnresolvedReferences
 import resource_rc
-from copy import deepcopy
 
 
 class PlaylistChoose(QDialog, my_base.UiChoose):
@@ -45,7 +46,7 @@ class PlaylistChoose(QDialog, my_base.UiChoose):
                 self.playlist_choice.insertItem(a, item)
                 a += 1
 
-    def getvalues(self):
+    def get_values(self):
         return self.playlist_choice.currentText()
 
 
@@ -69,7 +70,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         my_func.load_play_lists(self)
         my_func.load_now_playing(self)
         my_func.first_set_now_stuff(self)
-        my_func.set_playstatus(self)
+        my_func.set_play_status(self)
         self.tab_change()
         self.tabWidget.removeTab(3)
         my_func.load_config_data(self)
@@ -103,7 +104,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.btn_ok.clicked.connect(self.save_settings)
         self.btn_cancel.clicked.connect(self.cancel_settings)
 
-        self.table_pl_entries.__class__.dropEvent = self.mydragndropevent
+        self.table_pl_entries.__class__.dropEvent = self.my_drag_n_drop_event
         self.tabWidget.currentChanged.connect(self.tab_change)
         self.tableNowPlaying.doubleClicked.connect(xmmsfun.xmms_jump_to_track)
 
@@ -167,7 +168,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
                 all_pls.append(pl['Name'])
         dlg = PlaylistChoose(self, sorted(all_pls, key=lambda s: s.lower()))
         if dlg.exec_():
-            value = dlg.getvalues()
+            value = dlg.get_values()
             if value != "":
                 return value
         return False
@@ -187,7 +188,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         new_pl_icon = QIcon()
         new_pl_icon.addPixmap(QPixmap(":icons/playlist_add.png"), QIcon.Normal, QIcon.Off)
         new_playlist.setIcon(new_pl_icon)
-        create_from_albums = menu.addAction("Create playlists from Album names")
+        create_from_albums = menu.addAction("Create play lists from Album names")
         create_icon = QIcon()
         create_icon.addPixmap(QPixmap(":icons/book_cd.png"), QIcon.Normal, QIcon.Off)
         create_from_albums.setIcon(create_icon)
@@ -205,7 +206,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
             # print("I want to add a new playlist")
             my_func.add_new_playlist(self)
         if action == create_from_albums:
-            # print("Create playlists from Album names")
+            # print("Create play lists from Album names")
             my_func.make_playlists_from_albums(self)
 
     def open_ml_menu(self, position):
@@ -223,39 +224,39 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         rem_icon.addPixmap(QPixmap(":icons/remove.png"), QIcon.Normal, QIcon.Off)
         remove_from_library.setIcon(rem_icon)
         menu.addSeparator()
-        addtonowplayingaction = menu.addAction("Add selection to Now Playing")
+        add_to_now_playing_action = menu.addAction("Add selection to Now Playing")
         add_np_icon = QIcon()
         add_np_icon.addPixmap(QPixmap(":icons/add.png"), QIcon.Normal, QIcon.Off)
-        addtonowplayingaction.setIcon(add_np_icon)
-        replacenowplayingwithselectionaction = menu.addAction("Replace Now Playing with selection")
-        replacenowplayingwithselectionaction.setIcon(add_np_icon)
+        add_to_now_playing_action.setIcon(add_np_icon)
+        replace_now_playing_with_selection_action = menu.addAction("Replace Now Playing with selection")
+        replace_now_playing_with_selection_action.setIcon(add_np_icon)
         menu.addSeparator()
-        addtoexistingplaylistaction = menu.addAction("Add To Existing Playlist")
+        add_to_existing_play_list_action = menu.addAction("Add To Existing Playlist")
         add_pl_icon = QIcon()
         add_pl_icon.addPixmap(QPixmap(":icons/playlist.png"), QIcon.Normal, QIcon.Off)
-        addtoexistingplaylistaction.setIcon(add_pl_icon)
-        addtonewplaylistaction = menu.addAction("Add To NEW Playlist")
+        add_to_existing_play_list_action.setIcon(add_pl_icon)
+        add_to_new_play_list_action = menu.addAction("Add To NEW Playlist")
         new_pl_icon = QIcon()
         new_pl_icon.addPixmap(QPixmap(":icons/playlist_add.png"), QIcon.Normal, QIcon.Off)
-        addtonewplaylistaction.setIcon(new_pl_icon)
+        add_to_new_play_list_action.setIcon(new_pl_icon)
 
         if len(self.changed_ml_ids) > 0:
             update_media_library = menu.addAction("Update with " + str(len(self.changed_ml_ids)) + " changed entries")
         if len(self.combo_pl_names) <= 0:
-            addtoexistingplaylistaction.setEnabled(False)
+            add_to_existing_play_list_action.setEnabled(False)
         action = menu.exec_(self.tableMediaLibrary.mapToGlobal(position))
-        if action == addtoexistingplaylistaction:
+        if action == add_to_existing_play_list_action:
             pl_name = self.get_playlist()
             if pl_name is not False:
                 my_func.ml_selection_to_play_list(self, pl_name)
-        elif action == addtonewplaylistaction:
+        elif action == add_to_new_play_list_action:
             pl_name = my_func.add_new_playlist(self)
             if pl_name is not False:
                 my_func.ml_selection_to_play_list(self, pl_name)
-        elif action == addtonowplayingaction:
-            my_func.ml_selection_to_nowplaying(self)
-        elif action == replacenowplayingwithselectionaction:
-            my_func.ml_selection_replace_nowplaying(self)
+        elif action == add_to_now_playing_action:
+            my_func.ml_selection_to_now_playing(self)
+        elif action == replace_now_playing_with_selection_action:
+            my_func.ml_selection_replace_now_playing(self)
         elif action == import_files:
             my_func.import_files(self)
         elif action == import_dirs:
@@ -263,20 +264,23 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         elif action == remove_from_library:
             id_list = my_func.get_ml_selection(self)
             if my_func.check_now_playing_contains(id_list):
+                # noinspection PyTypeChecker,PyCallByClass,PyArgumentList
                 QMessageBox.warning(self, "Cannot do that!", "Cannot remove files that are in the current playlist")
             else:
+                # noinspection PyTypeChecker,PyCallByClass
                 reply = QMessageBox.question(self, 'Message', "Are you sure to remove the " +
                                              str(len(id_list)) + " selected tracks?",
                                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                 if reply == QMessageBox.Yes:
                     my_func.remove_ml_id_list_from_library(self, id_list)
         try:
+            # noinspection PyUnboundLocalVariable
             if action == update_media_library:
                 my_func.update_the_library(self)
         except UnboundLocalError:
             pass
 
-    def mydragndropevent(self, event):
+    def my_drag_n_drop_event(self, event):
         if event.source().objectName() == "table_pl_entries":
             pl_name = self.combo_pl_names.currentText()
         elif event.source().objectName() == "tableNowPlaying":
@@ -284,6 +288,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         if event.source().rowAt(event.pos().y()) == -1:
             return
         if event.source().objectName() == "table_pl_entries" or event.source().objectName() == "tableNowPlaying":
+            # noinspection PyUnboundLocalVariable
             xmmsfun.xmms_move_playlist_entry(event.source().currentRow(), event.source().rowAt(event.pos().y()),
                                              pl_name)
 
@@ -334,7 +339,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         pass
 
     def bc_mi_rd_st(self, result):
-        # print("        Broadcast mediainfo reader status() " + str(result.value()))
+        # print("        Broadcast media info reader status() " + str(result.value()))
         if result.value() == 1:
             self.reader_status = "Busy"
         elif result.value() == 0:
@@ -342,7 +347,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
             my_func.update_new_changed_ml_id_list(self, deepcopy(self.changed_ml_ids))
 
     def bc_ml_en_ad(self, result):
-        # print("Broadcast medialib entry added() " + str(result.value()))
+        # print("Broadcast media lib entry added() " + str(result.value()))
         if my_func.is_in_library(self, result.value()):
             # print("Got it already " + str(result.value()))
             pass
@@ -351,7 +356,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
             self.added_ml_ids.append(result.value())
 
     def bc_ml_en_ch(self, result):
-        # print("Broadcast medialib entry changed() " + str(result.value()))
+        # print("Broadcast media lib entry changed() " + str(result.value()))
         if self.reader_status == "Available":
             my_func.update_ml_id(self, result.value())
         else:
@@ -385,7 +390,8 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         pass
 
     def closeEvent(self, event):
-        choice = QMessageBox.question(self, 'Xmms2 Skin', 'Do you want to quit the applictaion?',
+        # noinspection PyTypeChecker,PyCallByClass
+        choice = QMessageBox.question(self, 'Xmms2 Skin', 'Do you want to quit the application?',
                                       QMessageBox.Yes | QMessageBox.No)
         if choice == QMessageBox.Yes:
             my_func.save_col_sizes(self)

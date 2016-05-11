@@ -126,13 +126,13 @@ class MyTable(QtWidgets.QTableWidget):
 
 
 class UiChoose(object):
-    def set_up_ui(self, Choose):
-        Choose.setObjectName("Choose")
-        Choose.resize(303, 103)
-        Choose.setWindowTitle("Choose Playlist")
-        self.gridLayout = QtWidgets.QGridLayout(Choose)
+    def set_up_ui(self, choose):
+        choose.setObjectName("Choose")
+        choose.resize(303, 103)
+        choose.setWindowTitle("Choose Playlist")
+        self.gridLayout = QtWidgets.QGridLayout(choose)
         self.gridLayout.setObjectName("gridLayout")
-        self.label = QtWidgets.QLabel(Choose)
+        self.label = QtWidgets.QLabel(choose)
         font = QtGui.QFont()
         font.setPointSize(14)
         self.label.setFont(font)
@@ -140,18 +140,18 @@ class UiChoose(object):
         self.label.setObjectName("label")
         self.label.setText("Please select the Playlist To use")
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
-        self.playlist_choice = QtWidgets.QComboBox(Choose)
+        self.playlist_choice = QtWidgets.QComboBox(choose)
         self.playlist_choice.setObjectName("playlist_choice")
         self.gridLayout.addWidget(self.playlist_choice, 1, 0, 1, 1)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Choose)
+        self.buttonBox = QtWidgets.QDialogButtonBox(choose)
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.gridLayout.addWidget(self.buttonBox, 2, 0, 1, 1)
 
-        self.buttonBox.accepted.connect(Choose.accept)
-        self.buttonBox.rejected.connect(Choose.reject)
-        QtCore.QMetaObject.connectSlotsByName(Choose)
+        self.buttonBox.accepted.connect(choose.accept)
+        self.buttonBox.rejected.connect(choose.reject)
+        QtCore.QMetaObject.connectSlotsByName(choose)
 
 
 class UiMainWindow(object):

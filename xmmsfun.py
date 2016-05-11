@@ -109,7 +109,7 @@ def xmms_prev():
 
 def xmms_stop():
     """
-    Stops PLayback
+    Stops PLay back
     :return: bool
     """
     result = xmms.playback_stop()
@@ -137,6 +137,7 @@ def xmms_get_all_library_list():
     Get full list of audio tracks from medialib
     :return: XmmsResult
     """
+    # noinspection PyUnresolvedReferences
     artist = c.Match(field="artist", value="*")
     result = xmms.coll_query_infos(artist, ["id", "artist", "title", "album", "genre", "bitrate", "performer",
                                             "duration", "timesplayed", "size", "partofset", "tracknr"])
@@ -160,7 +161,7 @@ def xmms_get_list_of_play_lists():
 
 def xmms_get_playlist_entries(playlist):
     """
-    Get medialib id's for given playlist
+    Get media lib id's for given playlist
     :param playlist: (str) playlist name
     :return: XmmsResult or False on error
     """
@@ -174,7 +175,7 @@ def xmms_get_playlist_entries(playlist):
 
 def xmms_get_now_playing_entries():
     """
-    Get medialib id's for currently playing playlist
+    Get media lib id's for currently playing playlist
     :return: XmmsResult of False on error
     """
     result = xmms.playlist_list_entries()
@@ -186,8 +187,8 @@ def xmms_get_now_playing_entries():
 
 def xmms_get_now_playing_ml_id():
     """
-    Get medialib id for currently playing track
-    :return: (int) medialib id
+    Get media lib id for currently playing track
+    :return: (int) media lib id
     """
     result = xmms.playback_current_id()
     result.wait()
@@ -290,7 +291,7 @@ def xmms_create_playlist(pl_name):
 
 def xmms_delete_playlist(pl_name):
     """
-    Delete playlist from medialib
+    Delete playlist from media lib
     :param pl_name: str
     :return: bool
     """
@@ -301,9 +302,9 @@ def xmms_delete_playlist(pl_name):
     return True
 
 
-def xmms_get_medialib_info_by_ml_id(ml_id):
+def xmms_get_media_lib_info_by_ml_id(ml_id):
     """
-    Get track information from medialib for given medialib id
+    Get track information from media lib for given media lib id
     :param ml_id: int
     :return: XmmsResult or False on error
     """
@@ -317,7 +318,7 @@ def xmms_get_medialib_info_by_ml_id(ml_id):
 
 def xmms_add_ml_id_to_playlist(ml_id, plist):
     """
-    Add given medialib id to given playlist
+    Add given media lib id to given playlist
     :param ml_id: int
     :param plist: str
     :return: bool
@@ -350,9 +351,9 @@ def xmms_jump_to_track(track):
     return True
 
 
-def xmms_medialib_remove_entry(ml_id):
+def xmms_media_lib_remove_entry(ml_id):
     """
-    Remove entry from medialib
+    Remove entry from media lib
     :param ml_id: int
     :return: bool
     """
@@ -370,8 +371,8 @@ def xmms_sort_playlist(pl_name, field):
     :param field: str
     :return: bool
     """
-    mysort = (field, '')
-    result = xmms.playlist_sort(mysort, playlist=pl_name)
+    my_sort = (field, '')
+    result = xmms.playlist_sort(my_sort, playlist=pl_name)
     result.wait()
     if result.is_error():
         return False
@@ -385,8 +386,8 @@ def xmms_reverse_sort_playlist(pl_name, field):
     :param field: str
     :return: bool
     """
-    mysort = ("-" + field, '')
-    result = xmms.playlist_sort(mysort, playlist=pl_name)
+    my_sort = ("-" + field, '')
+    result = xmms.playlist_sort(my_sort, playlist=pl_name)
     result.wait()
     if result.is_error():
         return False
@@ -395,7 +396,7 @@ def xmms_reverse_sort_playlist(pl_name, field):
 
 def xmms_import_file(filename):
     """
-    Import given file to medialib
+    Import given file to media lib
     :param filename: str (filename with full path)
     :return: bool
     """
@@ -406,13 +407,13 @@ def xmms_import_file(filename):
     return True
 
 
-def xmms_import_path(filepath):
+def xmms_import_path(file_path):
     """
-    Import (recursively) all files from a given filepath
-    :param filepath: str
+    Import (recursively) all files from a given file path
+    :param file_path: str
     :return: bool
     """
-    result = xmms.medialib_import_path('file://' + filepath)
+    result = xmms.medialib_import_path('file://' + file_path)
     result.wait()
     if result.is_error():
         return False
