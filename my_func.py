@@ -1012,21 +1012,24 @@ def remove_ml_id_list_from_library(self, id_list):
 
 def update_new_changed_ml_id_list(self, ml_id_list):
     self.tableMediaLibrary.setSortingEnabled(False)
-    for ml_id in ml_id_list:
-        result = xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id)
-        result.wait()
-        if result.is_error():
-            print("Failed to add " + str(ml_id))
-            continue
-        track = clean_track_result(result)
-        if is_in_library(self, track['id']):
-            update_ml_id_with_track(self, track)
-        else:
-            self.My_Library.append(track)
-            add_row_to_table(self.tableMediaLibrary, track)
-        # print(str(ml_id) + " Added to My Library")
-        self.added_ml_ids.remove(ml_id)
-        self.changed_ml_ids.remove(ml_id)
+    if ml_id_list:
+        for ml_id in ml_id_list:
+            result = xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id)
+            result.wait()
+            if result.is_error():
+                print("Failed to add " + str(ml_id))
+                continue
+            track = clean_track_result(result)
+            if is_in_library(self, track['id']):
+                update_ml_id_with_track(self, track)
+            else:
+                self.My_Library.append(track)
+                add_row_to_table(self.tableMediaLibrary, track)
+            # print(str(ml_id) + " Added to My Library")
+            if ml_id in self.added_ml_ids:
+                self.added_ml_ids.remove(ml_id)
+            self.changed_ml_ids.remove(ml_id)
+
     self.tableMediaLibrary.setSortingEnabled(True)
 
 
