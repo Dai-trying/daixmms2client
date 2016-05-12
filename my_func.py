@@ -430,7 +430,7 @@ def ms_int_to_time(ms):
     """
     Convert time in milliseconds to tuple (minutes, seconds)
     :param ms: int
-    :return: tuple
+    :return: tuple(minutes, seconds)
     """
     minutes = ms / 60000
     seconds = (ms % 60000)/1000
@@ -453,6 +453,13 @@ def convert_to_size(size):
 
 
 def playlist_position_change(self, result):
+    """
+    react to broadcast playlist position changes
+    highlight current row in now playing table
+    :param self:
+    :param result: XmmsResult Object
+    :return: bool
+    """
     if result.value()['name'] == "Default":
         if result.value()['position'] < 0:
             if xmmsfun.xmms_next() is False:
@@ -469,11 +476,22 @@ def playlist_position_change(self, result):
 
 
 def highlight_current(self):
+    """
+    set row to be highlighted from xmms
+    :param self:
+    :return: None
+    """
     pl_row = xmmsfun.xmms_get_now_playing_pl_id()
     highlight_row(self, pl_row.value()['position'])
 
 
 def highlight_row(self, this_row):
+    """
+    highlight given row after removing any previous highlights
+    :param self:
+    :param this_row: int
+    :return: bool
+    """
     all_rows = self.tableNowPlaying.rowCount()
     for row in xrange(0, all_rows):
         self.tableNowPlaying.item(row, 0).setBackground(QColor(255, 255, 255))
@@ -509,6 +527,12 @@ def highlight_row(self, this_row):
 
 
 def playlist_changed(self, result):
+    """
+    React to playlist changes, updating library, playlists and now playing tables
+    :param self:
+    :param result: XmmsResult Object
+    :return: None
+    """
     # print("Playlist Changed")
     if result.value()["type"] == 0:
         # print("    Add " + str(result.value()))
@@ -601,6 +625,12 @@ def playlist_changed(self, result):
 
 
 def collection_changed(self, result):
+    """
+    React to broadcast of collection changes
+    :param self:
+    :param result: XmmsResult
+    :return: None
+    """
     # print("Collection Changed")
     if result.value()['namespace'] == "Playlists":
         if result.value()['type'] == 0:
@@ -625,6 +655,11 @@ def collection_changed(self, result):
 
 
 def set_play_status(self):
+    """
+    Get play status and pass it to play_status_control
+    :param self:
+    :return: None
+    """
     status = xmmsfun.xmms_get_play_status()
     if status is not False:
         play_status_control(self, status)
@@ -632,6 +667,12 @@ def set_play_status(self):
 
 
 def play_status_control(self, status):
+    """
+    Set play buttons according to play status
+    :param self:
+    :param status: int
+    :return: None
+    """
     if status.value() == 0:
         self.toolStop.setDisabled(True)
         self.toolPause.hide()
@@ -654,6 +695,12 @@ def play_status_control(self, status):
 
 
 def first_set_now_stuff(self):
+    """
+    get current track from xmms and assign track information to Now_Playing variable and set window title to track
+    information
+    :param self:
+    :return: None
+    """
     ml_id = xmmsfun.xmms_get_now_playing_ml_id()
     if ml_id is None or ml_id == 0 or ml_id is False:
         return
@@ -666,6 +713,12 @@ def first_set_now_stuff(self):
 
 
 def set_now_stuff_from_broadcast(self, data):
+    """
+    Update Now_Playing variable and window title from broadcast information
+    :param self:
+    :param data: XmmsResult Object
+    :return: None
+    """
     track = get_info_by_ml_id(self, data.value())
     if track is None or track is False:
         return
@@ -675,6 +728,12 @@ def set_now_stuff_from_broadcast(self, data):
 
 
 def set_pb(self, ms):
+    """
+    Set progress bar
+    :param self:
+    :param ms: XmmsValue or int
+    :return: None
+    """
     # noinspection PyUnresolvedReferences
     if isinstance(ms, xmmsvalue.XmmsValue):
         milli_secs = ms.value()
@@ -689,13 +748,20 @@ def set_pb(self, ms):
         this_pc = milli_secs / float(pc)
         self.progressBar.setValue(this_pc)
     except ZeroDivisionError:
-        return 0
+        return
 
 
 # Playlist methods
 
 
 def remove_position_from_playlists(self, pos, play_list):
+    """
+    Remove media lib id from play list [Play_Lists] by position in list
+    :param self:
+    :param pos: int
+    :param play_list: string
+    :return: bool
+    """
     if is_in_playlists(self, play_list):
         plist = next((item for item in self.Play_Lists if item['Name'] == play_list), None)
         del plist['Ids'][pos]
@@ -705,6 +771,13 @@ def remove_position_from_playlists(self, pos, play_list):
 
 
 def add_ml_id_to_playlists(self, ml_id, play_list):
+    """
+    Add media lib id to end of play list [Play_Lists]
+    :param self:
+    :param ml_id: int
+    :param play_list: string
+    :return: bool
+    """
     if is_in_playlists(self, play_list):
         plist = next((item for item in self.Play_Lists if item['Name'] == play_list), None)
         if ml_id not in plist['Ids']:
@@ -715,6 +788,12 @@ def add_ml_id_to_playlists(self, ml_id, play_list):
 
 
 def is_in_playlists(self, pl_name):
+    """
+    check if play list is in the play list [Play_Lists]
+    :param self:
+    :param pl_name: string
+    :return: bool
+    """
     for track in self.Play_Lists:
         if track['Name'] == pl_name:
             return True
@@ -722,6 +801,14 @@ def is_in_playlists(self, pl_name):
 
 
 def move_position_in_playlists(self, play_list, old, new):
+    """
+    move media lib id in play list [Play_Lists]
+    :param self:
+    :param play_list: string
+    :param old: int
+    :param new: int
+    :return: bool
+    """
     if is_in_playlists(self, play_list):
         plist = next((item for item in self.Play_Lists if item['Name'] == play_list), None)
         plist['Ids'].insert(new, plist['Ids'].pop(old))
@@ -731,10 +818,22 @@ def move_position_in_playlists(self, play_list, old, new):
 
 
 def add_new_play_list_to_playlists(self, pl_name):
+    """
+    Add play list name with empty list to play lists [Play_Lists]
+    :param self:
+    :param pl_name: string
+    :return: None
+    """
     self.Play_Lists.append({"Name": pl_name, "Ids": []})
 
 
 def refresh_playlists(self, play_list):
+    """
+    refresh play list table contents from xmms
+    :param self:
+    :param play_list: string
+    :return: None
+    """
     self.Play_Lists[:] = [d for d in self.Play_Lists if d.get("Name") != play_list]
     pl_ids = xmmsfun.xmms_get_playlist_entries(play_list)
     if pl_ids is not False:
@@ -745,11 +844,22 @@ def refresh_playlists(self, play_list):
 
 
 def clear_playlist(self, play_list):
+    """
+    clear given playlist in play lists [Play_Lists]
+    :param self:
+    :param play_list: string
+    :return: None
+    """
     self.Play_Lists[:] = [d for d in self.Play_Lists if d.get("Name") != play_list]
     self.Play_Lists.append({"Name": play_list, "Ids": []})
 
 
 def refresh_playlist_combo(self):
+    """
+    Reload playlist combo box from play lists [Play_Lists]
+    :param self:
+    :return: None
+    """
     all_pls = []
     self.combo_pl_names.clear()
     for pl in self.Play_Lists:
@@ -762,12 +872,24 @@ def refresh_playlist_combo(self):
 
 
 def rename_playlist(self, old_name, new_name):
+    """
+    rename given playlist in play lists [Play_Lists]
+    :param self:
+    :param old_name: string
+    :param new_name: string
+    :return: None
+    """
     for plist in self.Play_Lists:
         if plist['Name'] == old_name:
             plist['Name'] = new_name
 
 
 def play_list_now(self):
+    """
+    Clear Default play list and Add currently selected play list (combo_pl_names) to now playing and start playback
+    :param self:
+    :return: None
+    """
     xmmsfun.xmms_clear_playlist_tracks("Default")
     this_pl = self.combo_pl_names.currentText()
     load_this_playlist(self, this_pl)
@@ -776,18 +898,34 @@ def play_list_now(self):
 
 
 def add_play_list_to_now(self):
+    """
+    Add currently selected play list (combo_pl_names) to now playing
+    :param self:
+    :return:
+    """
     this_pl = self.combo_pl_names.currentText()
     load_this_playlist(self, this_pl)
     self.tableNowPlaying.resizeColumnsToContents()
 
 
 def load_this_playlist(self, plist):
+    """
+    Add playlist to end of now playing (Default)
+    :param self:
+    :param plist: string
+    :return: None
+    """
     this_list = get_playlist_entries_from_mem(self, plist)
     for track in this_list:
         xmmsfun.xmms_add_ml_id_to_playlist(track, 'Default')
 
 
 def add_id_list_to_now_playing(selection):
+    """
+    Add list of media lib ids to now playing (Default)
+    :param selection: list of ints
+    :return: None
+    """
     if selection:
         for ml_id in selection:
             xmmsfun.xmms_add_ml_id_to_playlist(ml_id, "Default")
@@ -797,6 +935,13 @@ def add_id_list_to_now_playing(selection):
 
 
 def set_table_with_new_values(row, table, track):
+    """
+    Set given row in given table with given track info
+    :param row: int
+    :param table: table Object
+    :param track: dict
+    :return: None
+    """
     table.item(row, 0).setText(str(track['id']))
     table.item(row, 1).setText(str(track['tracknr']))
     table.item(row, 2).setText(str(track['album']))
@@ -812,6 +957,12 @@ def set_table_with_new_values(row, table, track):
 
 
 def update_ml_id_with_track(self, track):
+    """
+    Update all tables with given track information
+    :param self:
+    :param track: dict
+    :return: None
+    """
     self.My_Library[:] = [d for d in self.My_Library if d.get('id') != track['id']]
     self.My_Library.append(track)
 
@@ -831,6 +982,12 @@ def update_ml_id_with_track(self, track):
 
 
 def update_ml_id(self, ml_id):
+    """
+    Get new information from xmms and update Library table
+    :param self:
+    :param ml_id: int
+    :return: bool
+    """
     cl_track = clean_track_result(xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id))
     if cl_track is not None:
         self.tableMediaLibrary.setSortingEnabled(False)
@@ -839,8 +996,16 @@ def update_ml_id(self, ml_id):
         return True
     return False
 
+# TODO find out why I have two functions that seem to be doing the same thing
+
 
 def find_rows_in_table(table, ml_id):
+    """
+    find given media lib id in given table
+    :param table: table Object
+    :param ml_id: int
+    :return: int (row int table)
+    """
     lives_at = []
     for row in xrange(table.rowCount()):
         for column in xrange(1):
@@ -867,6 +1032,12 @@ def find_row_in_table(table, ml_id):
 
 
 def is_in_library(self, ml_id):
+    """
+    Check if given media lib id is in library [My_Library]
+    :param self:
+    :param ml_id: int
+    :return: bool
+    """
     for track in self.My_Library:
         if track['id'] == ml_id:
             return True
@@ -874,15 +1045,32 @@ def is_in_library(self, ml_id):
 
 
 def replace_in_library(self, data):
+    """
+    Replace given track in Library [My_Library]
+    :param self:
+    :param data: dict
+    :return: None
+    """
     self.My_Library[:] = [d for d in self.My_Library if d.get('id') != data['id']]
     self.My_Library.append(data)
 
 
 def remove_ml_id_from_library(self, ml_id):
+    """
+    Remove track from library [My_Library] by given media lib id
+    :param self:
+    :param ml_id: int
+    :return: None
+    """
     self.My_Library[:] = [d for d in self.My_Library if d.get('id') != ml_id]
 
 
 def get_ml_selection(self):
+    """
+    Get list[] containing media lib ids that are currently selected in the Library table
+    :param self:
+    :return: list
+    """
     indexes = []
     ml_ids = []
     for selectionRange in self.tableMediaLibrary.selectedRanges():
@@ -894,17 +1082,34 @@ def get_ml_selection(self):
 
 
 def ml_selection_to_now_playing(self):
+    """
+    Add currently selected item(s) in library table to now playing [Default]
+    :param self:
+    :return: None
+    """
     id_list = get_ml_selection(self)
     add_id_list_to_now_playing(id_list)
 
 
 def ml_selection_replace_now_playing(self):
+    """
+    Clear now playing [Default] and add currently selected tracks in library table to now playing [Default]
+    :param self:
+    :return: None
+    """
     id_list = get_ml_selection(self)
     xmmsfun.xmms_clear_playlist_tracks("Default")
     add_id_list_to_now_playing(id_list)
 
 
 def show_dialog(self, title, question):
+    """
+    Show input dialog and return user typed value
+    :param self:
+    :param title: string (title for dialog window)
+    :param question: string (Question to ask user)
+    :return: string (value returned from dialog)
+    """
     # noinspection PyArgumentList
     text, ok = QInputDialog.getText(self, title, question)
     if ok:
@@ -912,6 +1117,11 @@ def show_dialog(self, title, question):
 
 
 def add_new_playlist(self):
+    """
+    Add new playlist to xmms library
+    :param self:
+    :return: string or bool(False) on error
+    """
     pl_name = show_dialog(self, 'Input Dialog', 'Name for new playlist:')
     if pl_name is None or str(pl_name) is "":
         return False
@@ -921,17 +1131,34 @@ def add_new_playlist(self):
 
 
 def add_id_list_to_play_list(selection, pl_name):
+    """
+    Add given list of media lib ids to given playlist
+    :param selection: list
+    :param pl_name: string
+    :return: None
+    """
     if selection:
         for ml_id in selection:
             xmmsfun.xmms_add_ml_id_to_playlist(ml_id, pl_name)
 
 
 def ml_selection_to_play_list(self, pl_name):
+    """
+    Get currently selected items in library table and add them to given play list
+    :param self:
+    :param pl_name: string
+    :return: None
+    """
     id_list = get_ml_selection(self)
     add_id_list_to_play_list(id_list, pl_name)
 
 
 def update_the_library(self):
+    """
+    Reload complete library from xmms
+    :param self:
+    :return: None
+    """
     self.My_Library = []
     self.tableMediaLibrary.setRowCount(0)
     load_media_to_library(self)
@@ -939,6 +1166,11 @@ def update_the_library(self):
 
 
 def make_playlists_from_albums(self):
+    """
+    Create playlists from album names for entire library
+    :param self:
+    :return: None
+    """
     for track in self.My_Library:
         this_list = get_list_of_playlists(self)
         if track['album'] not in this_list:
@@ -951,6 +1183,11 @@ def make_playlists_from_albums(self):
 
 
 def get_list_of_playlists(self):
+    """
+    Get list[] of play list names sorted alphabetically
+    :param self:
+    :return: list
+    """
     this_list = []
     for my_list in self.Play_Lists:
         if my_list['Name'].startswith("_") or my_list['Name'] == "Default":
@@ -962,6 +1199,11 @@ def get_list_of_playlists(self):
 
 
 def import_files(self):
+    """
+    Import selected files to xmms library
+    :param self:
+    :return: None
+    """
     for file_with_path in QFileDialog.getOpenFileNames(self, "Import files to Xmms", os.path.expanduser("~"), ""):
         for filename in file_with_path:
             if os.path.isfile(filename):
@@ -969,6 +1211,11 @@ def import_files(self):
 
 
 def import_directory(self):
+    """
+    Import all files in selected Directory recursively to xmms library
+    :param self:
+    :return: None
+    """
     dir_with_path = str(QFileDialog.getExistingDirectory(self, "Select Directory", os.path.expanduser("~")))
     if dir_with_path != "":
         if os.path.isdir(dir_with_path):
@@ -979,6 +1226,11 @@ def import_directory(self):
 
 
 def remove_entry_from_playlist(self):
+    """
+    Remove selected row (table_pl_entries) from table and xmms play list
+    :param self:
+    :return: None
+    """
     if self.table_pl_entries.currentRow() is not -1:
         plist = self.combo_pl_names.currentText()
         pl_item = self.table_pl_entries.currentRow()
