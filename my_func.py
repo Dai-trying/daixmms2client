@@ -1238,6 +1238,11 @@ def remove_entry_from_playlist(self):
 
 
 def remove_entry_from_now_playing(self):
+    """
+    Remove currently selected row (tableNowPlaying) from table and xmms playlist (Default)
+    :param self:
+    :return: bool
+    """
     pl_item = self.tableNowPlaying.currentRow()
     current = xmmsfun.xmms_get_now_playing_pl_id()
     if pl_item != -1:
@@ -1256,6 +1261,12 @@ def remove_entry_from_now_playing(self):
 
 
 def remove_ml_id_list_from_library(self, id_list):
+    """
+    Remove given list of media lib ids from xmms library
+    :param self:
+    :param id_list: list[int]
+    :return: None
+    """
     for ml_id in id_list:
         if xmmsfun.xmms_media_lib_remove_entry(ml_id):
             self.tableMediaLibrary.removeRow(find_row_in_table(self.tableMediaLibrary, ml_id))
@@ -1263,6 +1274,12 @@ def remove_ml_id_list_from_library(self, id_list):
 
 
 def update_new_changed_ml_id_list(self, ml_id_list):
+    """
+    Update library [My_Library] with new or changed media lib ids from xmms
+    :param self:
+    :param ml_id_list: list
+    :return: None
+    """
     self.tableMediaLibrary.setSortingEnabled(False)
     if ml_id_list:
         for ml_id in ml_id_list:
@@ -1286,6 +1303,11 @@ def update_new_changed_ml_id_list(self, ml_id_list):
 
 
 def check_now_playing_contains(ml_id_list):
+    """
+    Check if current play list contains matching media lib id from given list[] of media lib ids
+    :param ml_id_list: list
+    :return: bool
+    """
     np_id_list = xmmsfun.xmms_get_now_playing_entries()
     for ml_id in ml_id_list:
         if ml_id in np_id_list.value():
@@ -1294,10 +1316,22 @@ def check_now_playing_contains(ml_id_list):
 
 
 def toggle_column(table, column, the_bool):
+    """
+    Toggle whether given column is shown or hidden on given table
+    :param table: table Object
+    :param column: int
+    :param the_bool: bool
+    :return: None
+    """
     table.setColumnHidden(column, the_bool)
 
 
 def load_col_sizes(self):
+    """
+    Load and set column size information from config file
+    :param self:
+    :return: None
+    """
     specs = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
@@ -1315,6 +1349,11 @@ def load_col_sizes(self):
 
 
 def load_config_data(self):
+    """
+    Set all config data from config file
+    :param self:
+    :return: None
+    """
     load_col_sizes(self)
     specs = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
     ml_rbs = [self.rb_ml_0, self.rb_ml_1, self.rb_ml_2, self.rb_ml_3, self.rb_ml_4, self.rb_ml_5, self.rb_ml_6,
@@ -1352,6 +1391,11 @@ def load_config_data(self):
 
 
 def save_col_sizes(self):
+    """
+    Save column size data to config file
+    :param self:
+    :return:
+    """
     specs = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
     the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
@@ -1375,6 +1419,11 @@ def save_col_sizes(self):
 
 
 def save_config_data(self):
+    """
+    Save all config data to config file
+    :param self:
+    :return: None
+    """
     specs = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
     ml_rbs = [self.rb_ml_0, self.rb_ml_1, self.rb_ml_2, self.rb_ml_3, self.rb_ml_4, self.rb_ml_5, self.rb_ml_6,
               self.rb_ml_7, self.rb_ml_8, self.rb_ml_9, self.rb_ml_10, self.rb_ml_11]
