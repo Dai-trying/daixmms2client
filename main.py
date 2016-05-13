@@ -116,18 +116,18 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
 
     def save_settings(self):
         self.toolSettings.setDisabled(False)
-        self.tabWidget.removeTab(3)
+        self.tabWidget.removeTab(self.tabWidget.indexOf(self.tabSettings))
         my_func.save_config_data(self)
 
     def cancel_settings(self):
         self.toolSettings.setDisabled(False)
-        self.tabWidget.removeTab(3)
+        self.tabWidget.removeTab(self.tabWidget.indexOf(self.tabSettings))
         my_func.load_config_data(self)
 
     def settings_tab_activated(self):
         self.toolSettings.setDisabled(True)
         self.tabWidget.addTab(self.tabSettings, "Settings")
-        self.tabWidget.setCurrentIndex(3)
+        self.tabWidget.setCurrentIndex(self.tabWidget.indexOf(self.tabSettings))
 
     def keyPressEvent(self, event):
         if event.key() == QtCore.Qt.Key_Delete:
@@ -335,7 +335,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         my_func.collection_changed(self, result)
 
     def bc_cnf_vl_ch(self, result):
-        # print("Broadcast config value changed() " + str(result.value()))
+        print("Broadcast config value changed() " + str(result.value()))
         pass
 
     def bc_mi_rd_st(self, result):
