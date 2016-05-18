@@ -418,3 +418,18 @@ def xmms_import_path(file_path):
     if result.is_error():
         return False
     return True
+
+
+def xmms_change_config_value(data, value):
+    result = xmms.configval_set(data, str(value))
+    result.wait()
+    if result.is_error():
+        return False
+    return True
+
+def xmms_get_config_value(data):
+    result = xmms.configval_get(data)
+    result.wait()
+    if result.is_error():
+        return False
+    return result

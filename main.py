@@ -23,6 +23,7 @@ from PyQt5 import QtCore
 from PyQt5.QtGui import (QIcon, QPixmap)
 import my_base
 import my_func
+import eq_func
 import xmmsfun
 from connector import XMMSConnector
 from copy import deepcopy
@@ -65,6 +66,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.xmms = xmmsfun.xmms
         XMMSConnector(self.xmms)
         self.reader_status = "Available"
+        eq_func.myself = self
         self.home()
         my_func.load_media_to_library(self)
         my_func.load_play_lists(self)
@@ -74,6 +76,8 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.tab_change()
         self.tabWidget.removeTab(self.tabWidget.indexOf(self.tabSettings))
         my_func.load_config_data(self)
+        eq_func.set_eq_disabled()
+
 
     def home(self):
         self.xmms.broadcast_collection_changed(self.bc_col_ch)
@@ -100,19 +104,30 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.toolEject.clicked.connect(self.clear_playlist_contents)
         self.toolDelete.clicked.connect(self.delete_playlist)
         self.toolSettings.clicked.connect(self.settings_tab_activated)
-
         self.btn_ok.clicked.connect(self.save_settings)
         self.btn_cancel.clicked.connect(self.cancel_settings)
 
         self.table_pl_entries.__class__.dropEvent = self.my_drag_n_drop_event
         self.tabWidget.currentChanged.connect(self.tab_change)
         self.tableNowPlaying.doubleClicked.connect(xmmsfun.xmms_jump_to_track)
-
         self.tableMediaLibrary.customContextMenuRequested.connect(self.open_ml_menu)
         self.combo_pl_names.customContextMenuRequested.connect(self.open_pl_menu)
-
         self.table_pl_entries.horizontalHeader().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.table_pl_entries.horizontalHeader().customContextMenuRequested.connect(self.pl_header_menu)
+
+        self.eq_h_slider_1.valueChanged.connect(eq_func.pre_amp_change)
+        self.v_slider_a.valueChanged.connect(eq_func.eq_32_changed)
+        self.v_slider_b.valueChanged.connect(eq_func.eq_64_changed)
+        self.v_slider_c.valueChanged.connect(eq_func.eq_128_changed)
+        self.v_slider_d.valueChanged.connect(eq_func.eq_256_changed)
+        self.v_slider_e.valueChanged.connect(eq_func.eq_512_changed)
+        self.v_slider_f.valueChanged.connect(eq_func.eq_1k_changed)
+        self.v_slider_g.valueChanged.connect(eq_func.eq_2k_changed)
+        self.v_slider_h.valueChanged.connect(eq_func.eq_4k_changed)
+        self.v_slider_i.valueChanged.connect(eq_func.eq_8k_changed)
+        self.v_slider_j.valueChanged.connect(eq_func.eq_16k_changed)
+        self.enable_button.pressed.connect(eq_func.eq_enabled)
+        # self.eq_h_slider_1.setValue()
 
     def save_settings(self):
         self.toolSettings.setDisabled(False)
