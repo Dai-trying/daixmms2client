@@ -287,7 +287,7 @@ class UiMainWindow(object):
         self.tableMediaLibrary.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
 
         self.gridLayout_3.addWidget(self.tableMediaLibrary, 0, 0, 1, 1)
-        self.tabWidget.addTab(self.tab, "")
+        self.tabWidget.addTab(self.tab, "Media Library")
 
         self.tab_2 = QtWidgets.QWidget()
         self.tab_2.setObjectName("tabPl")
@@ -304,7 +304,7 @@ class UiMainWindow(object):
         self.gridLayout.addWidget(self.combo_pl_names, 0, 0, 1, 1)
         self.gridLayout.addItem(spacer_item1, 0, 1, 1, 1)
         self.gridLayout.addWidget(self.table_pl_entries, 1, 0, 1, 2)
-        self.tabWidget.addTab(self.tab_2, "")
+        self.tabWidget.addTab(self.tab_2, "Playlist Manager")
 
         self.tab_3 = QtWidgets.QWidget()
         self.tab_3.setObjectName("tabNp")
@@ -314,7 +314,7 @@ class UiMainWindow(object):
         self.tableNowPlaying.setObjectName("tableNowPlaying")
         self.tableNowPlaying.setDragDropMode(QtWidgets.QAbstractItemView.DragDrop)
         self.gridLayout_2.addWidget(self.tableNowPlaying, 0, 0, 1, 1)
-        self.tabWidget.addTab(self.tab_3, "")
+        self.tabWidget.addTab(self.tab_3, "Now Playing")
 
         self.tabSettings = QtWidgets.QWidget()
         self.tabSettings.setObjectName("tabSettings")
@@ -593,14 +593,9 @@ class UiMainWindow(object):
         self.label_title.setObjectName("label_title")
         self.label_title.setText("D   I   S   P   L   A   Y     O   R     H   I   D   E     C   O   L   U   M   N   S")
         self.lyt_tab_grid.addWidget(self.label_title, 0, 0, 1, 11)
-        self.tabWidget.addTab(self.tabSettings, "")
+        self.tabWidget.addTab(self.tabSettings, "Settings")
 
         self.gridLayout_4.addWidget(self.tabWidget, 1, 0, 1, 10)
-
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), "Media Library")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_2), "Playlist Manager")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_3), "Now Playing")
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tabSettings), "Settings")
 
         main_window.setCentralWidget(self.central_widget)
 
