@@ -316,6 +316,11 @@ class UiMainWindow(object):
         self.gridLayout_2.addWidget(self.tableNowPlaying, 0, 0, 1, 1)
         self.tabWidget.addTab(self.tab_3, "Now Playing")
 
+        self.tab_eq = QtWidgets.QWidget()
+        self.tab_eq.setObjectName("tabEq")
+
+        self.tabWidget.addTab(self.tab_eq, "Equalizer")
+
         self.tabSettings = QtWidgets.QWidget()
         self.tabSettings.setObjectName("tabSettings")
         self.lyt_tab_grid = QtWidgets.QGridLayout(self.tabSettings)

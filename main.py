@@ -72,7 +72,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         my_func.first_set_now_stuff(self)
         my_func.set_play_status(self)
         self.tab_change()
-        self.tabWidget.removeTab(3)
+        self.tabWidget.removeTab(self.tabWidget.indexOf(self.tabSettings))
         my_func.load_config_data(self)
 
     def home(self):
