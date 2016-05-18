@@ -350,7 +350,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         my_func.collection_changed(self, result)
 
     def bc_cnf_vl_ch(self, result):
-        print("Broadcast config value changed() " + str(result.value()))
+        # print("Broadcast config value changed() " + str(result.value()))
         pass
 
     def bc_mi_rd_st(self, result):

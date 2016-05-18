@@ -94,13 +94,10 @@ def set_eq_disabled():
 
 
 def eq_enabled():
-    # print(myself.enable_button.isChecked())
     if myself.enable_button.isChecked() == True:
         xmmsfun.xmms_change_config_value("equalizer.enabled", "0")
         set_eq_disabled()
     else:
         xmmsfun.xmms_change_config_value("equalizer.enabled", "1")
-        # something = int(float(xmmsfun.xmms_get_config_value("equalizer.preamp").value()) * 10)
-        # print(something)
         xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0")
         set_eq_enabled()
