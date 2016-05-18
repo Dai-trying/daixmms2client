@@ -78,7 +78,6 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         my_func.load_config_data(self)
         eq_func.set_eq_disabled()
 
-
     def home(self):
         self.xmms.broadcast_collection_changed(self.bc_col_ch)
         self.xmms.broadcast_config_value_changed(self.bc_cnf_vl_ch)
@@ -116,18 +115,44 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.table_pl_entries.horizontalHeader().customContextMenuRequested.connect(self.pl_header_menu)
 
         self.eq_h_slider_1.valueChanged.connect(eq_func.pre_amp_change)
-        self.v_slider_a.valueChanged.connect(eq_func.eq_32_changed)
-        self.v_slider_b.valueChanged.connect(eq_func.eq_64_changed)
-        self.v_slider_c.valueChanged.connect(eq_func.eq_128_changed)
-        self.v_slider_d.valueChanged.connect(eq_func.eq_256_changed)
-        self.v_slider_e.valueChanged.connect(eq_func.eq_512_changed)
-        self.v_slider_f.valueChanged.connect(eq_func.eq_1k_changed)
-        self.v_slider_g.valueChanged.connect(eq_func.eq_2k_changed)
-        self.v_slider_h.valueChanged.connect(eq_func.eq_4k_changed)
-        self.v_slider_i.valueChanged.connect(eq_func.eq_8k_changed)
-        self.v_slider_j.valueChanged.connect(eq_func.eq_16k_changed)
+        self.v_slider_a.valueChanged.connect(eq_func.eq_25_changed)
+        self.v_slider_b.valueChanged.connect(eq_func.eq_40_changed)
+        self.v_slider_c.valueChanged.connect(eq_func.eq_63_changed)
+        self.v_slider_d.valueChanged.connect(eq_func.eq_100_changed)
+        self.v_slider_e.valueChanged.connect(eq_func.eq_160_changed)
+        self.v_slider_f.valueChanged.connect(eq_func.eq_250_changed)
+        self.v_slider_g.valueChanged.connect(eq_func.eq_400_changed)
+        self.v_slider_h.valueChanged.connect(eq_func.eq_630_changed)
+        self.v_slider_i.valueChanged.connect(eq_func.eq_1k_changed)
+        self.v_slider_j.valueChanged.connect(eq_func.eq_1_6k_changed)
+        self.v_slider_k.valueChanged.connect(eq_func.eq_2_5k_changed)
+        self.v_slider_l.valueChanged.connect(eq_func.eq_4k_changed)
+        self.v_slider_m.valueChanged.connect(eq_func.eq_6_3k_changed)
+        self.v_slider_n.valueChanged.connect(eq_func.eq_10k_changed)
+        self.v_slider_o.valueChanged.connect(eq_func.eq_16k_changed)
+
         self.enable_button.pressed.connect(eq_func.eq_enabled)
-        # self.eq_h_slider_1.setValue()
+        self.xmms.configval_list(self.handle_configval_list)
+
+    def handle_configval_list(self, val):
+        chained = False
+        dictval = val.value()
+        order = 0
+        for key in dictval:
+            # check if equalizer is in the chain already
+            # and if it's not then find out the position
+            # to put it in.
+            if key.startswith("effect.order"):
+                if dictval[key] == "equalizer":
+                    chained = True
+                elif len(dictval[key]) == 0:
+                    pass
+                else:
+                    order += 1
+
+        if not chained:
+            val = "effect.order.%d" % order
+            self.xmms.configval_set(val, "equalizer")
 
     def save_settings(self):
         self.toolSettings.setDisabled(False)
