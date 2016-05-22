@@ -432,4 +432,4 @@ def xmms_get_config_value(data):
     result.wait()
     if result.is_error():
         return False
-    return result
+    return result.value()

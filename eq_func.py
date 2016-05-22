@@ -82,38 +82,42 @@ def eq_16k_changed(var1):
 
 
 def set_eq_enabled():
-    myself.eq_h_slider_1.setDisabled(False)
-    myself.eq_h_slider_1.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.preamp").value()) * 10))
-    myself.v_slider_a.setDisabled(False)
-    myself.v_slider_a.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain00").value()) * 10))
-    myself.v_slider_b.setDisabled(False)
-    myself.v_slider_b.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain01").value()) * 10))
-    myself.v_slider_c.setDisabled(False)
-    myself.v_slider_c.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain02").value()) * 10))
-    myself.v_slider_d.setDisabled(False)
-    myself.v_slider_d.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain03").value()) * 10))
-    myself.v_slider_e.setDisabled(False)
-    myself.v_slider_e.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain04").value()) * 10))
-    myself.v_slider_f.setDisabled(False)
-    myself.v_slider_f.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain05").value()) * 10))
-    myself.v_slider_g.setDisabled(False)
-    myself.v_slider_g.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain06").value()) * 10))
-    myself.v_slider_h.setDisabled(False)
-    myself.v_slider_h.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain07").value()) * 10))
-    myself.v_slider_i.setDisabled(False)
-    myself.v_slider_i.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain08").value()) * 10))
-    myself.v_slider_j.setDisabled(False)
-    myself.v_slider_j.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain09").value()) * 10))
-    myself.v_slider_k.setDisabled(False)
-    myself.v_slider_k.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain10").value()) * 10))
-    myself.v_slider_l.setDisabled(False)
-    myself.v_slider_l.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain11").value()) * 10))
-    myself.v_slider_m.setDisabled(False)
-    myself.v_slider_m.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain12").value()) * 10))
-    myself.v_slider_n.setDisabled(False)
-    myself.v_slider_n.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain13").value()) * 10))
-    myself.v_slider_o.setDisabled(False)
-    myself.v_slider_o.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain14").value()) * 10))
+    try:
+        myself.eq_h_slider_1.setDisabled(False)
+        myself.eq_h_slider_1.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.preamp")) * 10))
+        myself.v_slider_a.setDisabled(False)
+        myself.v_slider_a.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain00")) * 10))
+        myself.v_slider_b.setDisabled(False)
+        myself.v_slider_b.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain01")) * 10))
+        myself.v_slider_c.setDisabled(False)
+        myself.v_slider_c.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain02")) * 10))
+        myself.v_slider_d.setDisabled(False)
+        myself.v_slider_d.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain03")) * 10))
+        myself.v_slider_e.setDisabled(False)
+        myself.v_slider_e.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain04")) * 10))
+        myself.v_slider_f.setDisabled(False)
+        myself.v_slider_f.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain05")) * 10))
+        myself.v_slider_g.setDisabled(False)
+        myself.v_slider_g.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain06")) * 10))
+        myself.v_slider_h.setDisabled(False)
+        myself.v_slider_h.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain07")) * 10))
+        myself.v_slider_i.setDisabled(False)
+        myself.v_slider_i.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain08")) * 10))
+        myself.v_slider_j.setDisabled(False)
+        myself.v_slider_j.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain09")) * 10))
+        myself.v_slider_k.setDisabled(False)
+        myself.v_slider_k.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain10")) * 10))
+        myself.v_slider_l.setDisabled(False)
+        myself.v_slider_l.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain11")) * 10))
+        myself.v_slider_m.setDisabled(False)
+        myself.v_slider_m.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain12")) * 10))
+        myself.v_slider_n.setDisabled(False)
+        myself.v_slider_n.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain13")) * 10))
+        myself.v_slider_o.setDisabled(False)
+        myself.v_slider_o.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.gain14")) * 10))
+    except AttributeError:
+        print("Error setting equalizer")
+        set_eq_disabled()
 
 
 def set_eq_disabled():
@@ -133,13 +137,17 @@ def set_eq_disabled():
     myself.v_slider_m.setDisabled(True)
     myself.v_slider_n.setDisabled(True)
     myself.v_slider_o.setDisabled(True)
+    myself.enable_button.setChecked(False)
 
 
-def eq_enabled():
+def toggle_equalizer():
     if myself.enable_button.isChecked():
-        xmmsfun.xmms_change_config_value("equalizer.enabled", "0")
-        set_eq_disabled()
-    else:
-        xmmsfun.xmms_change_config_value("equalizer.enabled", "1")
-        xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0")
+        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "0":
+            xmmsfun.xmms_change_config_value("equalizer.enabled", "1")
+        if xmmsfun.xmms_get_config_value("equalizer.use_legacy") == "1":
+            xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0")
         set_eq_enabled()
+    else:
+        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "1":
+            xmmsfun.xmms_change_config_value("equalizer.enabled", "0")
+        set_eq_disabled()

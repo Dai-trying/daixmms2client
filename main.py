@@ -131,7 +131,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         self.v_slider_n.valueChanged.connect(eq_func.eq_10k_changed)
         self.v_slider_o.valueChanged.connect(eq_func.eq_16k_changed)
 
-        self.enable_button.pressed.connect(eq_func.eq_enabled)
+        self.enable_button.released.connect(eq_func.toggle_equalizer)
         self.xmms.configval_list(self.handle_configval_list)
 
     def handle_configval_list(self, val):
@@ -139,9 +139,6 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         dictval = val.value()
         order = 0
         for key in dictval:
-            # check if equalizer is in the chain already
-            # and if it's not then find out the position
-            # to put it in.
             if key.startswith("effect.order"):
                 if dictval[key] == "equalizer":
                     chained = True
@@ -149,7 +146,6 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
                     pass
                 else:
                     order += 1
-
         if not chained:
             val = "effect.order.%d" % order
             self.xmms.configval_set(val, "equalizer")
@@ -363,7 +359,6 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
         xmmsfun.xmms_delete_playlist(pl_name)
 
     def set_progress(self, info):
-        # print("Set progress")
         my_func.set_pb(self, info)
         pass
 
