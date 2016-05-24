@@ -1,20 +1,20 @@
 
 #  Copyright 2016 by Dai Trying
 #
-#  This file is part of daixmms2skin.
+#  This file is part of daixmms2client.
 #
-#     daixmms2skin is free software: you can redistribute it and/or modify
+#     daixmms2client is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation, either version 3 of the License, or
 #     (at your option) any later version.
 #
-#     daixmms2skin is distributed in the hope that it will be useful,
+#     daixmms2client is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #     GNU General Public License for more details.
 #
 #     You should have received a copy of the GNU General Public License
-#     along with daixmms2skin.  If not, see <http://www.gnu.org/licenses/>.
+#     along with daixmms2client.  If not, see <http://www.gnu.org/licenses/>.
 
 
 import xmmsfun
@@ -677,7 +677,7 @@ def play_status_control(self, status):
         self.toolStop.setDisabled(True)
         self.toolPause.hide()
         self.toolPlay.show()
-        self.setWindowTitle("Dai's Xmms2 Skin")
+        self.setWindowTitle("Dai's Xmms2 Client")
         try:
             set_pb(self, 0)
         except AttributeError:

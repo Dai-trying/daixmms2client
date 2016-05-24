@@ -2,20 +2,20 @@
 
 #  Copyright 2016 by Dai Trying
 #
-#  This file is part of daixmms2skin.
+#  This file is part of daixmms2client.
 #
-#     daixmms2skin is free software: you can redistribute it and/or modify
+#     daixmms2client is free software: you can redistribute it and/or modify
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation, either version 3 of the License, or
 #     (at your option) any later version.
 #
-#     daixmms2skin is distributed in the hope that it will be useful,
+#     daixmms2client is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #     GNU General Public License for more details.
 #
 #     You should have received a copy of the GNU General Public License
-#     along with daixmms2skin.  If not, see <http://www.gnu.org/licenses/>.
+#     along with daixmms2client.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QMenu, QDialog, QMessageBox)
@@ -51,10 +51,10 @@ class PlaylistChoose(QDialog, my_base.UiChoose):
         return self.playlist_choice.currentText()
 
 
-class DaiSkin(QMainWindow, my_base.UiMainWindow):
+class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def __init__(self, parent=None):
-        super(DaiSkin, self).__init__(parent)
+        super(DaiClient, self).__init__(parent)
         self.setup_ui(self)
         self.My_Library = []
         self.Play_Lists = []
@@ -437,7 +437,7 @@ class DaiSkin(QMainWindow, my_base.UiMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    form = DaiSkin()
+    form = DaiClient()
     form.show()
     app.exec_()
 
