@@ -161,9 +161,9 @@ def set_eq_disabled():
 
 def toggle_equalizer():
     if myself.enable_button.isChecked():
-        if xmmsfun.xmms_get_config_value("equalizer.enabled") == 0:
-            if xmmsfun.xmms_change_config_value("equalizer.enabled", 1):
-                pass
+        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "0":
+            if xmmsfun.xmms_change_config_value("equalizer.enabled", "1"):
+                print("equalizer enabled")
             else:
                 myself.enable_button.setChecked(False)
                 return
