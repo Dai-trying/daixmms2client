@@ -101,7 +101,6 @@ def eq_16k_changed(var1):
 
 
 def set_eq_enabled():
-    print("gathering and applying settings")
     try:
         myself.eq_h_slider_1.setDisabled(False)
         myself.eq_h_slider_1.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.preamp")) * 10))
