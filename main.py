@@ -114,25 +114,18 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
         self.table_pl_entries.horizontalHeader().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
         self.table_pl_entries.horizontalHeader().customContextMenuRequested.connect(self.pl_header_menu)
 
-        self.eq_h_slider_1.valueChanged.connect(eq_func.pre_amp_change)
-        self.v_slider_a.valueChanged.connect(eq_func.eq_25_changed)
-        self.v_slider_b.valueChanged.connect(eq_func.eq_40_changed)
-        self.v_slider_c.valueChanged.connect(eq_func.eq_63_changed)
-        self.v_slider_d.valueChanged.connect(eq_func.eq_100_changed)
-        self.v_slider_e.valueChanged.connect(eq_func.eq_160_changed)
-        self.v_slider_f.valueChanged.connect(eq_func.eq_250_changed)
-        self.v_slider_g.valueChanged.connect(eq_func.eq_400_changed)
-        self.v_slider_h.valueChanged.connect(eq_func.eq_630_changed)
-        self.v_slider_i.valueChanged.connect(eq_func.eq_1k_changed)
-        self.v_slider_j.valueChanged.connect(eq_func.eq_1_6k_changed)
-        self.v_slider_k.valueChanged.connect(eq_func.eq_2_5k_changed)
-        self.v_slider_l.valueChanged.connect(eq_func.eq_4k_changed)
-        self.v_slider_m.valueChanged.connect(eq_func.eq_6_3k_changed)
-        self.v_slider_n.valueChanged.connect(eq_func.eq_10k_changed)
-        self.v_slider_o.valueChanged.connect(eq_func.eq_16k_changed)
+        for slide in eq_func.sliders:
+            this_ref = eval("self." + slide + "_slider")
+            this_ref.valueChanged.connect(self.handle_sliders)
 
         self.enable_button.released.connect(eq_func.toggle_equalizer)
         self.xmms.configval_list(self.handle_configval_list)
+
+    def handle_sliders(self, val):
+        var_to_set = "equalizer." + self.sender().objectName()
+        if xmmsfun.xmms_change_config_value(var_to_set, str(val / 10.0)):
+            ref = eval("self." + self.sender().objectName() + "_label")
+            ref.setText(str(val / 10.0))
 
     def handle_configval_list(self, val):
         chained = False

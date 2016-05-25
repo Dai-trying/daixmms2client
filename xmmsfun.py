@@ -421,6 +421,12 @@ def xmms_import_path(file_path):
 
 
 def xmms_change_config_value(data, value):
+    """
+    Set given config value with given value
+    :param data: str
+    :param value: int
+    :return: bool
+    """
     result = xmms.config_set_value(data, str(value))
     result.wait()
     if result.is_error():
@@ -429,6 +435,11 @@ def xmms_change_config_value(data, value):
 
 
 def xmms_get_config_value(data):
+    """
+    Retrieve config value for given config key
+    :param data: str
+    :return: int or False on error
+    """
     result = xmms.config_get_value(data)
     result.wait()
     if result.is_error():
