@@ -24,6 +24,7 @@ def pre_amp_change(var1):
     if xmmsfun.xmms_change_config_value("equalizer.preamp", str(var1 / 10.0)):
         myself.lbl_pre_amp_2.setText(str(var1 / 10.0))
 
+
 def eq_25_changed(var1):
     if xmmsfun.xmms_change_config_value("equalizer.gain00", str(var1 / 10.0)):
         myself.lbl_a1.setText(str(var1 / 10.0))
@@ -160,18 +161,17 @@ def set_eq_disabled():
 
 
 def toggle_equalizer():
+    is_on = xmmsfun.xmms_get_config_value("equalizer.enabled")
     if myself.enable_button.isChecked():
-        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "0":
-            if xmmsfun.xmms_change_config_value("equalizer.enabled", "1"):
-                print("equalizer enabled")
-            else:
-                myself.enable_button.setChecked(False)
-                return
+        if is_on is False:
+            myself.enable_button.setChecked(False)
+            return
+        if is_on == "0":
+            xmmsfun.xmms_change_config_value("equalizer.enabled", "1")
         if xmmsfun.xmms_get_config_value("equalizer.use_legacy") == "1":
-            if xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0"):
-                pass
+            xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0")
         set_eq_enabled()
     else:
-        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "1":
+        if is_on == "1":
             xmmsfun.xmms_change_config_value("equalizer.enabled", "0")
         set_eq_disabled()
