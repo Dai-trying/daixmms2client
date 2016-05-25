@@ -20,7 +20,6 @@
 from PyQt5.QtCore import QObject, QSocketNotifier
 
 
-# noinspection PyPep8Naming
 class XMMSConnector(QObject):
 
     def __init__(self, xmms):
@@ -30,16 +29,13 @@ class XMMSConnector(QObject):
         self.xmms.set_need_out_fun(self.checkWrite)
 
         self.rSock = QSocketNotifier(fd, QSocketNotifier.Read, self)
-        # noinspection PyUnresolvedReferences
         self.rSock.activated.connect(self.handleRead)
         self.rSock.setEnabled(True)
 
         self.wSock = QSocketNotifier(fd, QSocketNotifier.Write, self)
-        # noinspection PyUnresolvedReferences
         self.wSock.activated.connect(self.handleWrite)
         self.wSock.setEnabled(False)
 
-    # noinspection PyUnusedLocal
     def checkWrite(self, i):
         if self.xmms.want_ioout():
             self.toggleWrite(True)
@@ -47,19 +43,13 @@ class XMMSConnector(QObject):
             self.toggleWrite(False)
 
     def toggleRead(self, bool_val):
-        # print("toggleRead " + str(bool_val))
         self.rSock.setEnabled(bool_val)
 
     def toggleWrite(self, bool_val):
-        # print("toggleWrite " + str(bool_val))
         self.wSock.setEnabled(bool_val)
 
-    # noinspection PyUnusedLocal
     def handleRead(self, i):
-        # print("HandleRead " + str(i))
         self.xmms.ioin()
 
-    # noinspection PyUnusedLocal
     def handleWrite(self, i):
-        # print("HandleWrite " + str(i))
         self.xmms.ioout()
