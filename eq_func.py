@@ -21,86 +21,86 @@ import xmmsfun
 
 
 def pre_amp_change(var1):
-    myself.lbl_pre_amp_2.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.preamp", str(var1 / 10.0))
-
+    if xmmsfun.xmms_change_config_value("equalizer.preamp", str(var1 / 10.0)):
+        myself.lbl_pre_amp_2.setText(str(var1 / 10.0))
 
 def eq_25_changed(var1):
-    myself.lbl_a1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain00", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain00", str(var1 / 10.0)):
+        myself.lbl_a1.setText(str(var1 / 10.0))
 
 
 def eq_40_changed(var1):
-    myself.lbl_b1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain01", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain01", str(var1 / 10.0)):
+        myself.lbl_b1.setText(str(var1 / 10.0))
 
 
 def eq_63_changed(var1):
-    myself.lbl_c1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain02", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain02", str(var1 / 10.0)):
+        myself.lbl_c1.setText(str(var1 / 10.0))
 
 
 def eq_100_changed(var1):
-    myself.lbl_d1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain03", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain03", str(var1 / 10.0)):
+        myself.lbl_d1.setText(str(var1 / 10.0))
 
 
 def eq_160_changed(var1):
-    myself.lbl_e1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain04", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain04", str(var1 / 10.0)):
+        myself.lbl_e1.setText(str(var1 / 10.0))
 
 
 def eq_250_changed(var1):
-    myself.lbl_f1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain05", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain05", str(var1 / 10.0)):
+        myself.lbl_f1.setText(str(var1 / 10.0))
 
 
 def eq_400_changed(var1):
-    myself.lbl_g1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain06", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain06", str(var1 / 10.0)):
+        myself.lbl_g1.setText(str(var1 / 10.0))
 
 
 def eq_630_changed(var1):
-    myself.lbl_h1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain07", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain07", str(var1 / 10.0)):
+        myself.lbl_h1.setText(str(var1 / 10.0))
 
 
 def eq_1k_changed(var1):
-    myself.lbl_i1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain08", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain08", str(var1 / 10.0)):
+        myself.lbl_i1.setText(str(var1 / 10.0))
 
 
 def eq_1_6k_changed(var1):
-    myself.lbl_j1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain09", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain09", str(var1 / 10.0)):
+        myself.lbl_j1.setText(str(var1 / 10.0))
 
 
 def eq_2_5k_changed(var1):
-    myself.lbl_k1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain10", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain10", str(var1 / 10.0)):
+        myself.lbl_k1.setText(str(var1 / 10.0))
 
 
 def eq_4k_changed(var1):
-    myself.lbl_l1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain11", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain11", str(var1 / 10.0)):
+        myself.lbl_l1.setText(str(var1 / 10.0))
 
 
 def eq_6_3k_changed(var1):
-    myself.lbl_m1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain12", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain12", str(var1 / 10.0)):
+        myself.lbl_m1.setText(str(var1 / 10.0))
 
 
 def eq_10k_changed(var1):
-    myself.lbl_n1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain13", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain13", str(var1 / 10.0)):
+        myself.lbl_n1.setText(str(var1 / 10.0))
 
 
 def eq_16k_changed(var1):
-    myself.lbl_o1.setText(str(var1 / 10.0))
-    xmmsfun.xmms_change_config_value("equalizer.gain14", str(var1 / 10.0))
+    if xmmsfun.xmms_change_config_value("equalizer.gain14", str(var1 / 10.0)):
+        myself.lbl_o1.setText(str(var1 / 10.0))
 
 
 def set_eq_enabled():
+    print("gathering and applying settings")
     try:
         myself.eq_h_slider_1.setDisabled(False)
         myself.eq_h_slider_1.setValue(int(float(xmmsfun.xmms_get_config_value("equalizer.preamp")) * 10))
@@ -161,10 +161,15 @@ def set_eq_disabled():
 
 def toggle_equalizer():
     if myself.enable_button.isChecked():
-        if xmmsfun.xmms_get_config_value("equalizer.enabled") == "0":
-            xmmsfun.xmms_change_config_value("equalizer.enabled", "1")
+        if xmmsfun.xmms_get_config_value("equalizer.enabled") == 0:
+            if xmmsfun.xmms_change_config_value("equalizer.enabled", 1):
+                pass
+            else:
+                myself.enable_button.setChecked(False)
+                return
         if xmmsfun.xmms_get_config_value("equalizer.use_legacy") == "1":
-            xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0")
+            if xmmsfun.xmms_change_config_value("equalizer.use_legacy", "0"):
+                pass
         set_eq_enabled()
     else:
         if xmmsfun.xmms_get_config_value("equalizer.enabled") == "1":

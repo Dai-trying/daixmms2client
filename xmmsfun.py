@@ -427,6 +427,7 @@ def xmms_change_config_value(data, value):
         return False
     return True
 
+
 def xmms_get_config_value(data):
     result = xmms.config_get_value(data)
     result.wait()
