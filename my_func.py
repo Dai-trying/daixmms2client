@@ -1326,60 +1326,48 @@ def toggle_column(table, column, the_bool):
     table.setColumnHidden(column, the_bool)
 
 
-def load_col_sizes(self):
-    """
-    Load and set column size information from config file
-    :param self:
-    :return: None
-    """
-    specs = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
-    the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    config = SafeConfigParser()
-    config.read(conf_file)
-    for spec in specs:
-        if spec == 'table_ml_columns_size':
-            for row in the_rows:
-                self.tableMediaLibrary.setColumnWidth(row, int(config.get(spec, str(row))))
-        elif spec == 'table_pl_columns_size':
-            for row in the_rows:
-                self.table_pl_entries.setColumnWidth(row, int(config.get(spec, str(row))))
-        elif spec == 'table_np_columns_size':
-            for row in the_rows:
-                self.tableNowPlaying.setColumnWidth(row, int(config.get(spec, str(row))))
-
-
 def load_config_data(self):
     """
     Set all config data from config file
     :param self:
     :return: None
     """
-    load_col_sizes(self)
-    specs = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
+    table_show = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
+    table_size = ['table_ml_columns_size', 'table_pl_columns_size', 'table_np_columns_size']
     ml_rbs = [self.rb_ml_0, self.rb_ml_1, self.rb_ml_2, self.rb_ml_3, self.rb_ml_4, self.rb_ml_5, self.rb_ml_6,
               self.rb_ml_7, self.rb_ml_8, self.rb_ml_9, self.rb_ml_10, self.rb_ml_11]
     pl_rbs = [self.rb_pl_0, self.rb_pl_1, self.rb_pl_2, self.rb_pl_3, self.rb_pl_4, self.rb_pl_5, self.rb_pl_6,
               self.rb_pl_7, self.rb_pl_8, self.rb_pl_9, self.rb_pl_10, self.rb_pl_11]
     np_rbs = [self.rb_np_0, self.rb_np_1, self.rb_np_2, self.rb_np_3, self.rb_np_4, self.rb_np_5, self.rb_np_6,
               self.rb_np_7, self.rb_np_8, self.rb_np_9, self.rb_np_10, self.rb_np_11]
-    the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    all_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
     config.read(conf_file)
-    for spec in specs:
-        if spec == 'table_ml_columns_show':
-            for row in the_rows:
-                toggle_column(self.tableMediaLibrary, row, config.get(spec, str(row)) == 'False')
-                ml_rbs[row].setChecked(config.get(spec, str(row)) == 'True')
+    for t_size in table_size:
+        if t_size == 'table_ml_columns_size':
+            for row in all_rows:
+                self.tableMediaLibrary.setColumnWidth(row, int(config.get(t_size, str(row))))
+        elif t_size == 'table_pl_columns_size':
+            for row in all_rows:
+                self.table_pl_entries.setColumnWidth(row, int(config.get(t_size, str(row))))
+        elif t_size == 'table_np_columns_size':
+            for row in all_rows:
+                self.tableNowPlaying.setColumnWidth(row, int(config.get(t_size, str(row))))
+    for t_show in table_show:
+        if t_show == 'table_ml_columns_show':
+            for row in all_rows:
+                toggle_column(self.tableMediaLibrary, row, config.get(t_show, str(row)) == 'False')
+                ml_rbs[row].setChecked(config.get(t_show, str(row)) == 'True')
                 pass
-        elif spec == 'table_pl_columns_show':
-            for row in the_rows:
-                toggle_column(self.table_pl_entries, row, config.get(spec, str(row)) == 'False')
-                pl_rbs[row].setChecked(config.get(spec, str(row)) == 'True')
+        elif t_show == 'table_pl_columns_show':
+            for row in all_rows:
+                toggle_column(self.table_pl_entries, row, config.get(t_show, str(row)) == 'False')
+                pl_rbs[row].setChecked(config.get(t_show, str(row)) == 'True')
                 pass
-        elif spec == 'table_np_columns_show':
-            for row in the_rows:
-                toggle_column(self.tableNowPlaying, row, config.get(spec, str(row)) == 'False')
-                np_rbs[row].setChecked(config.get(spec, str(row)) == 'True')
+        elif t_show == 'table_np_columns_show':
+            for row in all_rows:
+                toggle_column(self.tableNowPlaying, row, config.get(t_show, str(row)) == 'False')
+                np_rbs[row].setChecked(config.get(t_show, str(row)) == 'True')
                 pass
 
     self.tableMediaLibrary.verticalHeader().setVisible(config.get('table_ml_columns_show', 'rows') == 'True')
@@ -1413,7 +1401,6 @@ def save_col_sizes(self):
             for row in the_rows:
                 if self.tableNowPlaying.columnWidth(row) != 0:
                     config.set(spec, str(row), (str(self.tableNowPlaying.columnWidth(row))))
-
     with open(conf_file, 'w') as f:
         config.write(f)
 
@@ -1424,34 +1411,30 @@ def save_config_data(self):
     :param self:
     :return: None
     """
-    specs = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
+    save_col_sizes(self)
+    tables = ['table_ml_columns_show', 'table_pl_columns_show', 'table_np_columns_show']
     ml_rbs = [self.rb_ml_0, self.rb_ml_1, self.rb_ml_2, self.rb_ml_3, self.rb_ml_4, self.rb_ml_5, self.rb_ml_6,
               self.rb_ml_7, self.rb_ml_8, self.rb_ml_9, self.rb_ml_10, self.rb_ml_11]
     pl_rbs = [self.rb_pl_0, self.rb_pl_1, self.rb_pl_2, self.rb_pl_3, self.rb_pl_4, self.rb_pl_5, self.rb_pl_6,
               self.rb_pl_7, self.rb_pl_8, self.rb_pl_9, self.rb_pl_10, self.rb_pl_11]
     np_rbs = [self.rb_np_0, self.rb_np_1, self.rb_np_2, self.rb_np_3, self.rb_np_4, self.rb_np_5, self.rb_np_6,
               self.rb_np_7, self.rb_np_8, self.rb_np_9, self.rb_np_10, self.rb_np_11]
-    the_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-
+    all_rows = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     config = SafeConfigParser()
     config.read(conf_file)
-
-    for spec in specs:
-        if spec == 'table_ml_columns_show':
-            for row in the_rows:
-                config.set(spec, str(row), str(ml_rbs[row].isChecked()))
-        elif spec == 'table_pl_columns_show':
-            for row in the_rows:
-                config.set(spec, str(row), str(pl_rbs[row].isChecked()))
-        elif spec == 'table_np_columns_show':
-            for row in the_rows:
-                config.set(spec, str(row), str(np_rbs[row].isChecked()))
+    for t_show in tables:
+        if t_show == 'table_ml_columns_show':
+            for row in all_rows:
+                config.set(t_show, str(row), str(ml_rbs[row].isChecked()))
+        elif t_show == 'table_pl_columns_show':
+            for row in all_rows:
+                config.set(t_show, str(row), str(pl_rbs[row].isChecked()))
+        elif t_show == 'table_np_columns_show':
+            for row in all_rows:
+                config.set(t_show, str(row), str(np_rbs[row].isChecked()))
     config.set('table_ml_columns_show', 'rows', str(self.rb_ml_rows.isChecked()))
     config.set('table_pl_columns_show', 'rows', str(self.rb_pl_rows.isChecked()))
     config.set('table_np_columns_show', 'rows', str(self.rb_np_rows.isChecked()))
-
     with open(conf_file, 'w') as f:
         config.write(f)
-
     load_config_data(self)
-    save_col_sizes(self)
