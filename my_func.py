@@ -528,7 +528,7 @@ def highlight_row(self, this_row):
 
 def playlist_changed(self, result):
     """
-    React to playlist changes, updating library, playlists and now playing tables
+    React to playlist changes, updating library, play lists and now playing tables
     :param self:
     :param result: XmmsResult Object
     :return: None
@@ -677,7 +677,7 @@ def play_status_control(self, status):
         self.toolStop.setDisabled(True)
         self.toolPause.hide()
         self.toolPlay.show()
-        self.setWindowTitle("Dai's Xmms2 Client")
+        self.setWindowTitle("Dai's Xmms2 Client   Version " + self.VERSION)
         try:
             set_pb(self, 0)
         except AttributeError:

@@ -55,6 +55,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def __init__(self, parent=None):
         super(DaiClient, self).__init__(parent)
+        self.VERSION = "0.0.1-10"
         self.setup_ui(self)
         self.My_Library = []
         self.Play_Lists = []
@@ -119,7 +120,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
             this_ref.valueChanged.connect(self.handle_sliders)
 
         self.enable_button.released.connect(eq_func.toggle_equalizer)
-        self.xmms.configval_list(self.handle_configval_list)
+        self.xmms.configval_list(self.handle_config_val_list)
 
     def handle_sliders(self, val):
         var_to_set = "equalizer." + self.sender().objectName()
@@ -127,15 +128,15 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
             ref = eval("self." + self.sender().objectName() + "_label")
             ref.setText(str(val / 10.0))
 
-    def handle_configval_list(self, val):
+    def handle_config_val_list(self, val):
         chained = False
-        dictval = val.value()
+        dict_val = val.value()
         order = 0
-        for key in dictval:
+        for key in dict_val:
             if key.startswith("effect.order"):
-                if dictval[key] == "equalizer":
+                if dict_val[key] == "equalizer":
                     chained = True
-                elif len(dictval[key]) == 0:
+                elif len(dict_val[key]) == 0:
                     pass
                 else:
                     order += 1
