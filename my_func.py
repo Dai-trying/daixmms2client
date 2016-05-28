@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import QInputDialog, QFileDialog
 from xmmsclient import xmmsvalue
 import os
 from ConfigParser import SafeConfigParser
+from mutagen.id3 import ID3, TIT2, TALB, TPOS, TPE2, TPE1, TRCK, TCON, ID3NoHeaderError
 
 if not os.path.isdir(os.path.join(os.path.expanduser('~'), ".config/daixmmsdata")):
     try:
@@ -1438,3 +1439,39 @@ def save_config_data(self):
     with open(conf_file, 'w') as f:
         config.write(f)
     load_config_data(self)
+
+
+def get_file_path(ml_id):
+    track = xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id)
+    return track
+
+
+def set_id3_tag(filename, my_dict):
+    def set_key_values():
+        for key, val in my_dict.iteritems():
+            if key == "album":
+                audio.add(TALB(encoding=1, text=unicode(val)))
+            elif key == "title":
+                audio.add(TIT2(encoding=1, text=unicode(val)))
+            elif key == "partofset":
+                audio.add(TPOS(encoding=1, text=unicode(val)))
+            elif key == "performer":
+                audio.add(TPE2(encoding=1, text=unicode(val)))
+            elif key == "artist":
+                audio.add(TPE1(encoding=1, text=unicode(val)))
+            elif key == "tracknr":
+                audio.add(TRCK(encoding=1, text=unicode(val)))
+            elif key == "genre":
+                audio.add(TCON(encoding=1, text=unicode(val)))
+
+    print(my_dict)
+    try:
+        audio = ID3(filename)
+        set_key_values()
+        audio.save()
+    except ID3NoHeaderError:
+        audio = ID3()
+        set_key_values()
+        audio.save(filename)
+
+    xmmsfun.xmms_server_rehash(int(my_dict['id']))

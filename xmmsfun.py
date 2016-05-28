@@ -445,3 +445,11 @@ def xmms_get_config_value(data):
     if result.is_error():
         return False
     return result.value()
+
+
+def xmms_server_rehash(ml_id):
+    result = xmms.medialib_rehash(ml_id)
+    result.wait()
+    if result.is_error():
+        return False
+    return True

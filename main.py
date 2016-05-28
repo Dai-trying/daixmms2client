@@ -27,9 +27,35 @@ import eq_func
 import xmmsfun
 from connector import XMMSConnector
 from copy import deepcopy
+import os
 
 # noinspection PyUnresolvedReferences
 import resource_rc
+
+
+class EditId3Tag(QDialog, my_base.Ui_EditId3Info):
+    def __init__(self, parent, data, genres):
+        super(EditId3Tag, self).__init__(parent)
+        self.data = data
+        self.genres = genres
+        self.setupUi(self)
+        self.ml_id_label.setText("Media Library Id " + str(self.data['id']))
+        self.title_lineEdit.setText(self.data['title'])
+        self.artist_lineEdit.setText(self.data['artist'])
+        self.track_spinBox.setValue(self.data['tracknr'])
+        self.album_lineEdit.setText(self.data['album'])
+        self.disc_spinBox.setValue(self.data['partofset'])
+        self.performer_lineEdit.setText(self.data['performer'])
+        self.genre_combo.insertItem(0, "")
+        for item in self.genres:
+            self.genre_combo.addItem(item)
+        self.genre_combo.setCurrentText(self.data['genre'])
+
+    def get_values(self):
+        return {'performer': self.performer_lineEdit.text(), 'partofset': self.disc_spinBox.text(),
+                'genre': self.genre_combo.currentText(), 'id': self.data['id'], 'album': self.album_lineEdit.text(),
+                'title': self.title_lineEdit.text(), 'artist': self.artist_lineEdit.text(),
+                'tracknr': self.track_spinBox.text()}
 
 
 class PlaylistChoose(QDialog, my_base.UiChoose):
@@ -64,6 +90,23 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
         self.changed_ml_ids = []
         self.my_props = ["id", "tracknr", "album", "partofset", "title", "artist", "genre", "performer", "duration",
                          "timesplayed", "bitrate", "size"]
+        self.genre_list = ["Blues", "Classic Rock", "Country", "Dance", "Disco", "Funk", "Grunge", "Hip-Hop", "Jazz",
+                           "Metal", "New Age", "Oldies", "Other", "Pop", "R&B", "Rap", "Reggae", "Rock", "Techno",
+                           "Industrial", "Alternative", "Ska", "Death Metal", "Pranks", "Soundtrack", "Euro-Techno",
+                           "Ambient", "Trip-Hop", "Vocal", "Jazz+Funk", "Fusion", "Trance", "Classical", "Instrumental",
+                           "Acid", "House", "Game", "Sound Clip", "Gospel", "Noise", "AlternRock", "Bass", "Soul",
+                           "Punk", "Space", "Meditative", "Instrumental Pop", "Instrumental Rock", "Ethnic", "Gothic",
+                           "Darkwave", "Techno-Industrial", "Electronic", "Pop-Folk", "Eurodance", "Dream",
+                           "Southern Rock", "Comedy", "Cult", "Gangsta", "Top 40", "Christian Rap", "Pop/Funk",
+                           "Jungle", "Native American", "Cabaret", "New Wave", "Psychadelic", "Rave", "Showtunes",
+                           "Trailer", "Lo-Fi", "Tribal", "Acid Punk", "Acid Jazz", "Polka", "Retro", "Musical",
+                           "Rock & Roll", "Hard Rock", "Folk", "Folk-Rock", "National Folk", "Swing", "Fast Fusion",
+                           "Bebob", "Latin", "Revival", "Celtic", "Bluegrass", "Avantgarde", "Gothic Rock",
+                           "Progressive Rock", "Psychedelic Rock", "Symphonic Rock", "Slow Rock", "Big Band", "Chorus",
+                           "Easy Listening", "Acoustic", "Humour", "Speech", "Chanson", "Opera", "Chamber Music",
+                           "Sonata", "Symphony", "Booty Bass", "Primus", "Porn Groove", "Satire", "Slow Jam", "Club",
+                           "Tango", "Samba", "Folklore", "Ballad", "Power Ballad", "Rhythmic Soul", "Freestyle", "Duet",
+                           "Punk Rock", "Drum Solo", "A capella", "Euro-House", "Dance Hall"]
         self.xmms = xmmsfun.xmms
         XMMSConnector(self.xmms)
         self.reader_status = "Available"
@@ -110,6 +153,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
         self.table_pl_entries.__class__.dropEvent = self.my_drag_n_drop_event
         self.tabWidget.currentChanged.connect(self.tab_change)
         self.tableNowPlaying.doubleClicked.connect(xmmsfun.xmms_jump_to_track)
+        self.tableMediaLibrary.doubleClicked.connect(self.edit_id3_tag)
         self.tableMediaLibrary.customContextMenuRequested.connect(self.open_ml_menu)
         self.combo_pl_names.customContextMenuRequested.connect(self.open_pl_menu)
         self.table_pl_entries.horizontalHeader().setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
@@ -127,6 +171,22 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
         if xmmsfun.xmms_change_config_value(var_to_set, str(val / 10.0)):
             ref = eval("self." + self.sender().objectName() + "_label")
             ref.setText(str(val / 10.0))
+
+    def edit_id3_tag(self, song):
+        ml_id = self.tableMediaLibrary.item(song.row(), 0).text()
+        track_info = my_func.get_info_by_ml_id(self, int(ml_id))
+        # print(track_info)
+        dlg = EditId3Tag(self, track_info, sorted(self.genre_list, key=lambda s: s.lower()))
+        if dlg.exec_():
+            value = dlg.get_values()
+            # print(str(value))
+
+            file_name = my_func.get_file_path(int(ml_id))
+            clean_file_name = file_name.value()['url'].replace("file://", "")
+            # print(clean_file_name)
+            if os.path.isfile(clean_file_name):
+                print("File verified exists")
+                my_func.set_id3_tag(clean_file_name, value)
 
     def handle_config_val_list(self, val):
         chained = False
