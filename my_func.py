@@ -1441,7 +1441,7 @@ def save_config_data(self):
     load_config_data(self)
 
 
-def get_file_path(ml_id):
+def get_xmms_db_info(ml_id):
     track = xmmsfun.xmms_get_media_lib_info_by_ml_id(ml_id)
     return track
 
@@ -1464,7 +1464,7 @@ def set_id3_tag(filename, my_dict):
             elif key == "genre":
                 audio.add(TCON(encoding=1, text=unicode(val)))
 
-    print(my_dict)
+    # print(my_dict)
     try:
         audio = ID3(filename)
         set_key_values()

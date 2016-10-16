@@ -28,6 +28,7 @@ import xmmsfun
 from connector import XMMSConnector
 from copy import deepcopy
 import os
+import urllib
 
 # noinspection PyUnresolvedReferences
 import resource_rc
@@ -173,20 +174,24 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
             ref.setText(str(val / 10.0))
 
     def edit_id3_tag(self, song):
+
         ml_id = self.tableMediaLibrary.item(song.row(), 0).text()
         track_info = my_func.get_info_by_ml_id(self, int(ml_id))
         # print(track_info)
+
         dlg = EditId3Tag(self, track_info, sorted(self.genre_list, key=lambda s: s.lower()))
         if dlg.exec_():
             value = dlg.get_values()
-            # print(str(value))
 
-            file_name = my_func.get_file_path(int(ml_id))
-            clean_file_name = file_name.value()['url'].replace("file://", "")
-            # print(clean_file_name)
-            if os.path.isfile(clean_file_name):
-                print("File verified exists")
-                my_func.set_id3_tag(clean_file_name, value)
+            file_info = my_func.get_xmms_db_info(int(ml_id))
+            file_with_path = file_info.value()['url'].replace("file://", "")
+            test_file_name = urllib.unquote_plus(file_with_path)
+            test_file_name2 = urllib.unquote(test_file_name)
+
+            if os.path.isfile(test_file_name2):
+                my_func.set_id3_tag(test_file_name2, value)
+            else:
+                QMessageBox.information(self, 'FILE NAME ERROR', "I cannot write the information to the file,\nit may contain characters that are not readable to me.")
 
     def handle_config_val_list(self, val):
         chained = False
