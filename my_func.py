@@ -1469,9 +1469,14 @@ def set_id3_tag(filename, my_dict):
         audio = ID3(filename)
         set_key_values()
         audio.save()
+    except IOError:
+        return False
     except ID3NoHeaderError:
-        audio = ID3()
-        set_key_values()
-        audio.save(filename)
+        try:
+            audio = ID3()
+            set_key_values()
+            audio.save(filename)
+        except IOError:
+            return False
 
     xmmsfun.xmms_server_rehash(int(my_dict['id']))

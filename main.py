@@ -82,7 +82,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def __init__(self, parent=None):
         super(DaiClient, self).__init__(parent)
-        self.VERSION = "0.0.1-11"
+        self.VERSION = "0.0.1-13"
         self.setup_ui(self)
         self.My_Library = []
         self.Play_Lists = []
@@ -189,9 +189,13 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
             test_file_name2 = urllib.unquote(test_file_name)
 
             if os.path.isfile(test_file_name2):
-                my_func.set_id3_tag(test_file_name2, value)
+                if my_func.set_id3_tag(test_file_name2, value) == False:
+                    QMessageBox.information(self, 'FILE NAME ERROR', "I cannot write the information to the file,\nit "
+                                                                     "is likely that I do not have sufficient"
+                                                                     " priviliges.")
             else:
-                QMessageBox.information(self, 'FILE NAME ERROR', "I cannot write the information to the file,\nit may contain characters that are not readable to me.")
+                QMessageBox.information(self, 'FILE NAME ERROR', "I cannot write the information to the file,\nit may "
+                                                                 "contain characters that are not readable to me.")
 
     def handle_config_val_list(self, val):
         chained = False
@@ -485,7 +489,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def closeEvent(self, event):
         # noinspection PyTypeChecker,PyCallByClass
-        choice = QMessageBox.question(self, 'Xmms2 Skin', 'Do you want to quit the application?',
+        choice = QMessageBox.question(self, 'Xmms2 Client', 'Do you want to quit the application?',
                                       QMessageBox.Yes | QMessageBox.No)
         if choice == QMessageBox.Yes:
             my_func.save_col_sizes(self)
