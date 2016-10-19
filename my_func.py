@@ -1474,7 +1474,7 @@ def set_id3_tag(filename, my_dict):
     set_key_values()
     try:
         tags.save(filename)
-    except mutagen.MutagenError:
+    except (mutagen.MutagenError, IOError):
         return False
 
     xmmsfun.xmms_server_rehash(int(my_dict['id']))

@@ -82,7 +82,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def __init__(self, parent=None):
         super(DaiClient, self).__init__(parent)
-        self.VERSION = "0.0.1-13"
+        self.VERSION = "0.0.1-14"
         self.setup_ui(self)
         self.My_Library = []
         self.Play_Lists = []
@@ -200,9 +200,9 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
             if os.path.isfile(test_file_name2):
                 if my_func.set_id3_tag(test_file_name2, value) == False:
-                    QMessageBox.information(self, 'FILE PERMISSION ERROR', "I cannot write the information to the file,\nit "
-                                                                     "is likely that I do not have sufficient"
-                                                                     " priviliges.")
+                    QMessageBox.information(self, 'FILE PERMISSION ERROR', "I cannot write the information to the file,"
+                                                                           "\nit is likely that I do not have "
+                                                                           "sufficient priviliges.")
             else:
                 QMessageBox.information(self, 'FILE NAME ERROR', "I cannot write the information to the file,\nit may "
                                                                  "contain characters that are not readable to me.")
