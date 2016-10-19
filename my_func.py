@@ -25,7 +25,7 @@ from xmmsclient import xmmsvalue
 import os
 from ConfigParser import SafeConfigParser
 from mutagen.id3 import ID3, TIT2, TALB, TPOS, TPE2, TPE1, TRCK, TCON, ID3NoHeaderError
-
+import mutagen
 if not os.path.isdir(os.path.join(os.path.expanduser('~'), ".config/daixmmsdata")):
     try:
         os.makedirs(os.path.join(os.path.expanduser('~'), ".config/daixmmsdata"))
@@ -1450,33 +1450,32 @@ def set_id3_tag(filename, my_dict):
     def set_key_values():
         for key, val in my_dict.iteritems():
             if key == "album":
-                audio.add(TALB(encoding=1, text=unicode(val)))
+                tags["TALB"] = TALB(encoding=3, text=unicode(val))
             elif key == "title":
-                audio.add(TIT2(encoding=1, text=unicode(val)))
+                tags["TIT2"] = TIT2(encoding=3, text=unicode(val))
             elif key == "partofset":
-                audio.add(TPOS(encoding=1, text=unicode(val)))
+                tags["TPOS"] = TPOS(encoding=3, text=unicode(val))
             elif key == "performer":
-                audio.add(TPE2(encoding=1, text=unicode(val)))
+                tags["TPE2"] = TPE2(encoding=3, text=unicode(val))
             elif key == "artist":
-                audio.add(TPE1(encoding=1, text=unicode(val)))
+                tags["TPE1"] = TPE1(encoding=3, text=unicode(val))
             elif key == "tracknr":
-                audio.add(TRCK(encoding=1, text=unicode(val)))
+                tags["TRCK"] = TRCK(encoding=3, text=unicode(val))
             elif key == "genre":
-                audio.add(TCON(encoding=1, text=unicode(val)))
+                tags["TCON"] = TCON(encoding=3, text=unicode(val))
 
     # print(my_dict)
     try:
-        audio = ID3(filename)
-        set_key_values()
-        audio.save()
-    except IOError:
-        return False
+        tags = ID3(filename)
     except ID3NoHeaderError:
-        try:
-            audio = ID3()
-            set_key_values()
-            audio.save(filename)
-        except IOError:
-            return False
+        # print "Adding ID3 header;",
+        tags = ID3()
+
+    set_key_values()
+    try:
+        tags.save(filename)
+    except mutagen.MutagenError:
+        return False
 
     xmmsfun.xmms_server_rehash(int(my_dict['id']))
+    return True
