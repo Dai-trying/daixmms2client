@@ -11,11 +11,11 @@
 #
 #     daixmms2client is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
-#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 #     GNU General Public License for more details.
 #
 #     You should have received a copy of the GNU General Public License
-#     along with daixmms2client.  If not, see <http://www.gnu.org/licenses/>.
+#     along with daixmms2client. If not, see <http://www.gnu.org/licenses/>.
 
 import sys
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QMenu, QDialog, QMessageBox)
@@ -82,7 +82,7 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
 
     def __init__(self, parent=None):
         super(DaiClient, self).__init__(parent)
-        self.VERSION = "0.0.1-14"
+        self.VERSION = "0.0.1-15"
         self.setup_ui(self)
         self.My_Library = []
         self.Play_Lists = []
@@ -498,14 +498,8 @@ class DaiClient(QMainWindow, my_base.UiMainWindow):
         pass
 
     def closeEvent(self, event):
-        # noinspection PyTypeChecker,PyCallByClass
-        choice = QMessageBox.question(self, 'Xmms2 Client', 'Do you want to quit the application?',
-                                      QMessageBox.Yes | QMessageBox.No)
-        if choice == QMessageBox.Yes:
-            my_func.save_col_sizes(self)
-            event.accept()
-        else:
-            event.ignore()
+        my_func.save_col_sizes(self)
+        event.accept()
 
 
 def main():
