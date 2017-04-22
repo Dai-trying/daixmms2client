@@ -242,6 +242,7 @@ class UiMainWindow(object):
         self.progressBar.setObjectName("progressBar")
         self.progressBar.setMinimumSize(QtCore.QSize(350, 22))
         self.progressBar.setMaximumSize(QtCore.QSize(350, 22))
+        self.progressBar.setAlignment(QtCore.Qt.AlignCenter)
 
         self.line = QtWidgets.QFrame(self.central_widget)
         self.line.setFrameShape(QtWidgets.QFrame.VLine)
